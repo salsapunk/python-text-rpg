@@ -19,8 +19,6 @@ match system:
 
 #os.system(os_var)
 
-#player1 = Player()
-
 def title_screen():
     os.system(os_var)
     print('#' * 29)
@@ -47,6 +45,12 @@ def title_screen_options():
         title_screen()
 
 quitgame = 'quit'
+
+def mostrar_mapa():
+    print('Mapa:')
+    for tile in mapa:
+        resultado = ' '.join(tile)
+        print(resultado)
 
 def atributos():
     pontos = 3
@@ -78,12 +82,62 @@ def atributos():
 def prompt():
     prompt = input('> ').lower()
     if prompt not in ['olhar', 'investigar', 'usar', 'pegar', 'inspecionar']:
-        print('Digite um comando que esteja na lista! #print(lista)')
+        print('Digite um comando válido!')
+    elif prompt == 'quitgame':
+        sys.exit()
     else:
         match prompt:
             case 'olhar':
-                None
-            case 
+                pass
+            case 'investigar':
+                pass
+            case 'usar':
+                pass
+            case 'pegar':
+                pass
+            case 'inspecionar':
+                pass
+
+def atributos_settings():
+    os.system(os_var)
+    q2 = 'Distribua três pontos entre os seguintes atributos, que já começam com 1 \n'
+    for caractere in q2:
+        sys.stdout.write(caractere)
+        sys.stdout.flush()
+        sleep(0.05)
+    atributos()
+    print(player1._skills)
+    print('Tem certeza da distribuição dos atributos?')
+    r = input('[Sim / Não] \n' '> ').lower()
+    if r in ['nao', 'não', 'n']:
+        atributos_settings()
+    if r in ['sim', 's']:
+        pass
+
+def posicao():
+    mostrar_mapa()
+    print(player1._xposition, player1._yposition)
+    #print(para esquerda tem blablabla, ...)
+    prompt_posicao = input('Para qual direção gostaria de ir? >').lower()
+    direcoes = ['oeste', 'leste', 'norte', 'sul']
+    if prompt_posicao not in direcoes:
+        print('erro')
+    else:
+        match prompt_posicao:
+            case 'oeste':
+                player1._xposition += 1
+                print(mapa[player1._xposition][player1._yposition])
+            case 'leste':
+                player1._xposition -= 1
+                print(mapa[player1._xposition][player1._yposition])
+            case 'norte':
+                player1._yposition += 1
+                print(mapa[player1._xposition][player1._yposition])
+            case 'sul':
+                player1._yposition -= 1
+                print(mapa[player1._xposition][player1._yposition])
+
+
 
 def setup_game():
     os.system(os_var)
@@ -95,22 +149,10 @@ def setup_game():
     name = input('> ')
     player1._name = name
 
-    q2 = 'Distribua três pontos entre os seguintes atributos, que já começam com 1 \n'
-    for caractere in q2:
-        sys.stdout.write(caractere)
-        sys.stdout.flush()
-        sleep(0.05)
-    atributos()
-    print(player1._skills)
-    print('Tem certeza da distribuição dos atributos?')
-    r = input('[Sim / Não]').lower
-    if r in ['sim']:
-        pass
-    elif r in ['nao', 'não']:
-        atributos()
-        print(player1._skills)
-        pass
+    atributos_settings()
     print(f'Que o vento guie sua jornada, {player1._name}')
+    sleep(0.5)
+    posicao()
 
 
 title_screen()
