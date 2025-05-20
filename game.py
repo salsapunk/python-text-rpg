@@ -47,7 +47,7 @@ quitgame = 'quit'
 
 def mostrar_mapa():
     print('Mapa:')
-    for tile in mapa:
+    for tile in mapa_geral:
         resultado = ' '.join(tile)
         print(resultado)
 
@@ -114,16 +114,29 @@ def atributos_settings():
         pass
 
 def checar_posicao():
-    if (player1._xposition == a) or (player1._yposition == a):
+    if 12 == player1._xposition == 0:
         print('A neblina é muito densa, você não consegue enxergar nada. É melhor não se afastar muito.')
+        match player1._xposition:
+            case 12:
+                player1._xposition = 11
+            case 0:
+                player1._xposition = 1
         posicao()
-    elif (player1._xposition == w) or (player1._yposition == w):
+    elif 9 == player1._yposition == 0:
+        print('A neblina é muito densa, você não consegue enxergar nada. É melhor não se afastar muito.')
+        match player1._yposition:
+            case 9:
+                player1._yposition = 8
+            case 0:
+                player1._yposition = 1
+        posicao()
+    elif player1._xposition == w or player1._yposition == w:
         print('Você está em uma estrada, o caminho é seguro.')
-    elif (player1._xposition == x) or (player1._yposition == x):
+    elif player1._xposition == x or player1._yposition == x:
         print('Você está em uma floresta, o caminho é seguro.')
-    elif (player1._xposition == y) or (player1._yposition == y):
+    elif player1._xposition == y or player1._yposition == y:
         print('Você está no templo da floresta, o caminho é seguro.')
-    elif (player1._xposition == quitgame) or (player1._yposition == quitgame):
+    elif player1._xposition == quitgame or player1._yposition == quitgame:
         os.system(os_var)
         print('Você saiu do jogo.')
         sys.exit()
@@ -131,7 +144,6 @@ def checar_posicao():
 def posicao():
     mostrar_mapa()
     #print(player1._xposition, player1._yposition)
-
     #print(para esquerda tem blablabla, ...)
     prompt_posicao = input('Para qual direção gostaria de ir? \n >').lower()
     direcoes = ['oeste', 'leste', 'norte', 'sul']
@@ -140,13 +152,17 @@ def posicao():
     else:
         match prompt_posicao:
             case 'oeste':
-                player1._xposition += 1
+                player1._xposition -= 1
+                print('Você se moveu para o oeste.')
             case 'leste':
                 player1._xposition -= 1
+                print('Você se moveu para o leste.')
             case 'norte':
                 player1._yposition += 1
+                print('Você se moveu para o norte.')
             case 'sul':
                 player1._yposition -= 1
+                print('Você se moveu para o sul.')
         checar_posicao()
 
 
