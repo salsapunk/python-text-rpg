@@ -4,7 +4,6 @@
 
 from data import *
 import os
-from random import randint
 from time import sleep
 import sys
 import textwrap
@@ -114,11 +113,27 @@ def atributos_settings():
     if r in ['sim', 's']:
         pass
 
+def checar_posicao():
+    if (player1._xposition == a) or (player1._yposition == a):
+        print('A neblina é muito densa, você não consegue enxergar nada. É melhor não se afastar muito.')
+        posicao()
+    elif (player1._xposition == w) or (player1._yposition == w):
+        print('Você está em uma estrada, o caminho é seguro.')
+    elif (player1._xposition == x) or (player1._yposition == x):
+        print('Você está em uma floresta, o caminho é seguro.')
+    elif (player1._xposition == y) or (player1._yposition == y):
+        print('Você está no templo da floresta, o caminho é seguro.')
+    elif (player1._xposition == quitgame) or (player1._yposition == quitgame):
+        os.system(os_var)
+        print('Você saiu do jogo.')
+        sys.exit()
+
 def posicao():
     mostrar_mapa()
-    print(player1._xposition, player1._yposition)
+    #print(player1._xposition, player1._yposition)
+
     #print(para esquerda tem blablabla, ...)
-    prompt_posicao = input('Para qual direção gostaria de ir? >').lower()
+    prompt_posicao = input('Para qual direção gostaria de ir? \n >').lower()
     direcoes = ['oeste', 'leste', 'norte', 'sul']
     if prompt_posicao not in direcoes:
         print('erro')
@@ -126,16 +141,13 @@ def posicao():
         match prompt_posicao:
             case 'oeste':
                 player1._xposition += 1
-                print(mapa[player1._xposition][player1._yposition])
             case 'leste':
                 player1._xposition -= 1
-                print(mapa[player1._xposition][player1._yposition])
             case 'norte':
                 player1._yposition += 1
-                print(mapa[player1._xposition][player1._yposition])
             case 'sul':
                 player1._yposition -= 1
-                print(mapa[player1._xposition][player1._yposition])
+        checar_posicao()
 
 
 
