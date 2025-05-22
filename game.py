@@ -98,88 +98,107 @@ def prompt():
                 pass
 
 def atributos_settings():
-    os.system(os_var)
-    q2 = 'Distribua três pontos entre os seguintes atributos, que já começam com 1 \n'
-    for caractere in q2:
-        sys.stdout.write(caractere)
-        sys.stdout.flush()
-        sleep(0.05)
-    atributos()
-    print(player1._skills)
-    print('Tem certeza da distribuição dos atributos?')
-    r = input('[Sim / Não] \n' '> ').lower()
-    if r in ['nao', 'não', 'n']:
-        atributos_settings()
-    if r in ['sim', 's']:
-        pass
+    while True:
+        os.system(os_var)
+        q2 = 'Distribua três pontos entre os seguintes atributos, que já começam com 1 \n'
+        for caractere in q2:
+            sys.stdout.write(caractere)
+            sys.stdout.flush()
+            sleep(0.05)
+        atributos()
+        print(player1._skills)
+        print('Tem certeza da distribuição dos atributos?')
+        r = input('[Sim / Não] \n' '> ').lower()
+        if r in ['nao', 'não', 'n']:
+            print('Tente novamente')
+        elif r in ['sim', 's']:
+            break
+        else:
+            print('Responda com Sim ou Não. Faça novamente!')
+            sleep(2)
 
 def checar_posicao():
-    if 12 == player1._xposition == 0:
+    if mapa_geral[player1._yposition][player1._xposition] == ' ':
         print('A neblina é muito densa, você não consegue enxergar nada. É melhor não se afastar muito.')
         match player1._xposition:
             case 12:
                 player1._xposition = 11
             case 0:
                 player1._xposition = 1
-        posicao()
-    elif 9 == player1._yposition == 0:
-        print('A neblina é muito densa, você não consegue enxergar nada. É melhor não se afastar muito.')
         match player1._yposition:
             case 9:
                 player1._yposition = 8
             case 0:
                 player1._yposition = 1
-        posicao()
-    elif player1._xposition == w or player1._yposition == w:
+        return 'não'
+    elif mapa_geral[player1._yposition][player1._xposition] == '=':
         print('Você está em uma estrada, o caminho é seguro.')
-    elif player1._xposition == x or player1._yposition == x:
+        return 'sim'
+    elif mapa_geral[player1._yposition][player1._xposition] == '⛶':
         print('Você está em uma floresta, o caminho é seguro.')
-    elif player1._xposition == y or player1._yposition == y:
+    elif mapa_geral[player1._yposition][player1._xposition] == '▨':
         print('Você está no templo da floresta, o caminho é seguro.')
-    elif player1._xposition == quitgame or player1._yposition == quitgame:
-        os.system(os_var)
-        print('Você saiu do jogo.')
-        sys.exit()
 
 def posicao():
+    mapa_geral[player1._yposition][player1._xposition] = 'o'
     mostrar_mapa()
     #print(player1._xposition, player1._yposition)
     #print(para esquerda tem blablabla, ...)
-    prompt_posicao = input('Para qual direção gostaria de ir? \n >').lower()
-    direcoes = ['oeste', 'leste', 'norte', 'sul']
-    if prompt_posicao not in direcoes:
-        print('erro')
-    else:
-        match prompt_posicao:
-            case 'oeste':
-                player1._xposition -= 1
-                print('Você se moveu para o oeste.')
-            case 'leste':
-                player1._xposition -= 1
-                print('Você se moveu para o leste.')
-            case 'norte':
-                player1._yposition += 1
-                print('Você se moveu para o norte.')
-            case 'sul':
-                player1._yposition -= 1
-                print('Você se moveu para o sul.')
-        checar_posicao()
-
+    chave = ' '
+    while True:
+        prompt_posicao = input('Para qual direção gostaria de ir? \n >').lower()
+        direcoes = ['oeste', 'leste', 'norte', 'sul']
+        if prompt_posicao not in direcoes:
+            print('Essa direção não existe. Tente novamente!')
+        else:
+            match prompt_posicao:
+                case 'oeste':
+                    player1._xposition -= 1
+                    chave = checar_posicao()
+                    if chave == 'sim':
+                        print('Você se moveu para o oeste.')
+                        break
+                    else: None
+                case 'leste':
+                    player1._xposition += 1
+                    chave = checar_posicao()
+                    if chave == 'sim':
+                        print('Você se moveu para o leste.')
+                        break
+                    else: None
+                case 'norte':
+                    player1._yposition -= 1
+                    chave = checar_posicao()
+                    if chave == 'sim':
+                        print('Você se moveu para o norte.')
+                        break
+                    else: None
+                case 'sul':
+                    player1._yposition += 1
+                    chave = checar_posicao()
+                    if chave == 'sim':
+                        print('Você se moveu para o sul.')
+                        break
+                    else: None
 
 
 def setup_game():
-    os.system(os_var)
-    q1 = 'Qual o nome do seu personagem? \n'
-    for caractere in q1:
-        sys.stdout.write(caractere)
-        sys.stdout.flush()
-        sleep(0.05)
-    name = input('> ')
-    player1._name = name
+    #os.system(os_var)
+    #q1 = 'Qual o nome do seu personagem? \n'
+    #for caractere in q1:
+    #    sys.stdout.write(caractere)
+    ##    sys.stdout.flush()
+    #    sleep(0.05)
+    #name = input('> ')
+    #player1._name = name
 
-    atributos_settings()
-    print(f'Que o vento guie sua jornada, {player1._name}')
-    sleep(0.5)
+    #atributos_settings()
+    #print(f'Que o vento guie sua jornada, {player1._name}')
+    #sleep(0.5)
+    posicao()
+    sleep(1)
+    print('teste')
+    sleep(1)
     posicao()
 
 
