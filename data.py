@@ -71,7 +71,7 @@ class Arma(Item):
 a = ' ' #limitando a movimentação
 w = '=' #estrada
 x = '^' #floresta
-y = '▨' #templo da floresta
+y = '▨' #armazém
 z = '⛶' #casa abandonada
 
 mapa_geral = [[a, a, a, a, a, a, a, a, a, a, a, a, a],
@@ -84,6 +84,8 @@ mapa_geral = [[a, a, a, a, a, a, a, a, a, a, a, a, a],
               [a, x, w, x, y, y, y, x, x, w, x, x, a],
               [a, x, w, x, x, x, x, x, x, w, x, x, a],
               [a, a, a, a, a, a, a, a, a, a, a, a, a]]
+
+posicao_player = mapa_geral[player1._yposition][player1._xposition]
 
 #i = 8 #(de 0 a 13)
 #j = 2 #(de 0 a 10)

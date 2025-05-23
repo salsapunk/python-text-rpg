@@ -130,14 +130,19 @@ def checar_posicao():
                 player1._yposition = 8
             case 0:
                 player1._yposition = 1
-        return 'não'
+        return 'não', ' '
     elif mapa_geral[player1._yposition][player1._xposition] == '=':
         print('Você está em uma estrada, o caminho é seguro.')
-        return 'sim'
-    elif mapa_geral[player1._yposition][player1._xposition] == '⛶':
+        return 'sim', 'estrada'
+    elif mapa_geral[player1._yposition][player1._xposition] == '^':
         print('Você está em uma floresta, o caminho é seguro.')
+        return 'sim', 'floresta'
     elif mapa_geral[player1._yposition][player1._xposition] == '▨':
         print('Você está no templo da floresta, o caminho é seguro.')
+        return 'sim', 'armazém'
+    elif mapa_geral[player1._yposition][player1._xposition] == '⛶':
+        print('Você está numa casa abandonada.')
+        return 'sim', 'casa'
 
 def posicao():
     mapa_geral[player1._yposition][player1._xposition] = 'o'
@@ -151,50 +156,52 @@ def posicao():
         if prompt_posicao not in direcoes:
             print('Essa direção não existe. Tente novamente!')
         else:
+            xposition_antiga = player1._xposition
+            yposition_antiga = player1._yposition
             match prompt_posicao:
                 case 'oeste':
                     player1._xposition -= 1
-                    chave = checar_posicao()
-                    if chave == 'sim':
-                        print('Você se moveu para o oeste.')
-                        break
-                    else: None
                 case 'leste':
                     player1._xposition += 1
-                    chave = checar_posicao()
-                    if chave == 'sim':
-                        print('Você se moveu para o leste.')
-                        break
-                    else: None
                 case 'norte':
                     player1._yposition -= 1
-                    chave = checar_posicao()
-                    if chave == 'sim':
-                        print('Você se moveu para o norte.')
-                        break
-                    else: None
                 case 'sul':
                     player1._yposition += 1
-                    chave = checar_posicao()
-                    if chave == 'sim':
-                        print('Você se moveu para o sul.')
-                        break
-                    else: None
+            chave, tile = checar_posicao()
+            if chave == 'sim':
+                print(tile)
+                match tile: 
+                    case 'floresta':
+                        mapa_geral[yposition_antiga][xposition_antiga] = '^'
+                    case 'estrada':
+                         mapa_geral[yposition_antiga][xposition_antiga] = '='
+                    case 'armazém':
+                         mapa_geral[yposition_antiga][xposition_antiga] = '▨'
+                    case 'casa':
+                         mapa_geral[yposition_antiga][xposition_antiga] = '⛶'
+                    case 'floresta':
+                         mapa_geral[yposition_antiga][xposition_antiga] = '^'
+                mapa_geral[player1._yposition][player1._xposition] = 'o'
+                print(f'Você se moveu para o {prompt_posicao}.')
+                break
+            else:
+                player1._xposition = xposition_antiga
+                player1._yposition = yposition_antiga
 
 
 def setup_game():
-    #os.system(os_var)
-    #q1 = 'Qual o nome do seu personagem? \n'
-    #for caractere in q1:
-    #    sys.stdout.write(caractere)
-    ##    sys.stdout.flush()
-    #    sleep(0.05)
-    #name = input('> ')
-    #player1._name = name
+    os.system(os_var)
+    q1 = 'Qual o nome do seu personagem? \n'
+    for caractere in q1:
+        sys.stdout.write(caractere)
+        sys.stdout.flush()
+        sleep(0.05)
+    name = input('> ')
+    player1._name = name
 
-    #atributos_settings()
-    #print(f'Que o vento guie sua jornada, {player1._name}')
-    #sleep(0.5)
+    atributos_settings()
+    print(f'Que o vento guie sua jornada, {player1._name}')
+    sleep(0.5)
     posicao()
     sleep(1)
     print('teste')
