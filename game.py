@@ -18,7 +18,15 @@ match system:
 
 #os.system(os_var)
 
+def pre_main():
+    player1._xposition = 2
+    player1._yposition = 8
+
+mapa0 = gerar_mapa0()
+posicao_player = mapa0[player1._yposition][player1._xposition]
+
 def title_screen():
+    pre_main()
     os.system(os_var)
     print('#' * 29)
     print(f'[ Bem-vindo ao RPG de texto ]')
@@ -38,16 +46,13 @@ def title_screen_options():
         #help()
     elif option.lower() == 'sair':
         sys.exit()
-    while option.lower not in ['jogar', 'ajuda', 'sair']:
+    else:
         print('Comando inválido, tente novamente.')
         sleep(2)
         title_screen()
 
-quitgame = 'quit'
-
 def mostrar_mapa():
-    print('Mapa:')
-    for tile in mapa_geral:
+    for tile in mapa0:
         resultado = ' '.join(tile)
         print(resultado)
 
@@ -82,7 +87,7 @@ def prompt():
     prompt = input('> ').lower()
     if prompt not in ['olhar', 'investigar', 'usar', 'pegar', 'inspecionar']:
         print('Digite um comando válido!')
-    elif prompt == 'quitgame':
+    elif prompt == 'sair':
         sys.exit()
     else:
         match prompt:
@@ -118,8 +123,13 @@ def atributos_settings():
             sleep(2)
 
 def checar_posicao():
-    if mapa_geral[player1._yposition][player1._xposition] == ' ':
-        print('A neblina é muito densa, você não consegue enxergar nada. É melhor não se afastar muito.')
+    if mapa0[player1._yposition][player1._xposition] == ' ':
+        print()
+        m_neblina = 'A neblina é muito densa, você não consegue enxergar nada. É melhor não se afastar muito.'
+        for caractere in m_neblina:
+            sys.stdout.write(caractere)
+            sys.stdout.flush()
+            sleep(0.05)
         match player1._xposition:
             case 12:
                 player1._xposition = 11
@@ -131,30 +141,44 @@ def checar_posicao():
             case 0:
                 player1._yposition = 1
         return 'não', ' '
-    elif mapa_geral[player1._yposition][player1._xposition] == '=':
+    elif mapa0[player1._yposition][player1._xposition] == '=':
+        print()
         print('Você está em uma estrada, o caminho é seguro.')
         return 'sim', 'estrada'
-    elif mapa_geral[player1._yposition][player1._xposition] == '^':
-        print('Você está em uma floresta, o caminho é seguro.')
+    elif mapa0[player1._yposition][player1._xposition] == '^':
+        print()
+        print('Você está no meio da floresta')
         return 'sim', 'floresta'
-    elif mapa_geral[player1._yposition][player1._xposition] == '▨':
-        print('Você está no templo da floresta, o caminho é seguro.')
+    elif mapa0[player1._yposition][player1._xposition] == '▨':
+        print()
+        print('Você está em um armazém no meio da floresta.')
         return 'sim', 'armazém'
-    elif mapa_geral[player1._yposition][player1._xposition] == '⛶':
+    elif mapa0[player1._yposition][player1._xposition] == '⛶':
+        print()
         print('Você está numa casa abandonada.')
         return 'sim', 'casa'
 
+def legenda():
+    print("'=' representa a estrada")
+    print("'^' representa a floresta")
+    print("'▨' representa um armazém")
+    print("'⛶' representa uma casa abandonada")
+    print("'o' representa onde seu personagem está")
+
 def posicao():
-    mapa_geral[player1._yposition][player1._xposition] = 'o'
-    mostrar_mapa()
-    #print(player1._xposition, player1._yposition)
-    #print(para esquerda tem blablabla, ...)
-    chave = ' '
+    mapa0[player1._yposition][player1._xposition] = 'o'
     while True:
-        prompt_posicao = input('Para qual direção gostaria de ir? \n >').lower()
-        direcoes = ['oeste', 'leste', 'norte', 'sul']
+        print('Para qual direção gostaria de ir?')
+        print('(Ou escreva "Sair" para sair, ou "Mapa" para ver o mapa e as legendas)')
+        prompt_posicao = input('> ').lower()
+        direcoes = ['oeste', 'leste', 'norte', 'sul', 'sair', 'mapa']
         if prompt_posicao not in direcoes:
             print('Essa direção não existe. Tente novamente!')
+        elif prompt_posicao == 'sair':
+            sys.exit()
+        elif prompt_posicao == 'mapa':
+            mostrar_mapa()
+            legenda()
         else:
             xposition_antiga = player1._xposition
             yposition_antiga = player1._yposition
@@ -169,20 +193,16 @@ def posicao():
                     player1._yposition += 1
             chave, tile = checar_posicao()
             if chave == 'sim':
-                print(tile)
                 match tile: 
                     case 'floresta':
-                        mapa_geral[yposition_antiga][xposition_antiga] = '^'
+                        mapa0[yposition_antiga][xposition_antiga] = '^'
                     case 'estrada':
-                         mapa_geral[yposition_antiga][xposition_antiga] = '='
+                         mapa0[yposition_antiga][xposition_antiga] = '='
                     case 'armazém':
-                         mapa_geral[yposition_antiga][xposition_antiga] = '▨'
+                         mapa0[yposition_antiga][xposition_antiga] = '▨'
                     case 'casa':
-                         mapa_geral[yposition_antiga][xposition_antiga] = '⛶'
-                    case 'floresta':
-                         mapa_geral[yposition_antiga][xposition_antiga] = '^'
-                mapa_geral[player1._yposition][player1._xposition] = 'o'
-                print(f'Você se moveu para o {prompt_posicao}.')
+                         mapa0[yposition_antiga][xposition_antiga] = '⛶'
+                mapa0[player1._yposition][player1._xposition] = 'o'
                 break
             else:
                 player1._xposition = xposition_antiga
@@ -190,21 +210,19 @@ def posicao():
 
 
 def setup_game():
-    os.system(os_var)
-    q1 = 'Qual o nome do seu personagem? \n'
-    for caractere in q1:
-        sys.stdout.write(caractere)
-        sys.stdout.flush()
-        sleep(0.05)
-    name = input('> ')
-    player1._name = name
+    #os.system(os_var)
+    #q1 = 'Qual o nome do seu personagem? \n'
+    #for caractere in q1:
+    #    sys.stdout.write(caractere)
+    #    sys.stdout.flush()
+    #    sleep(0.05)
+    #name = input('> ')
+    #player1._name = name
 
-    atributos_settings()
-    print(f'Que o vento guie sua jornada, {player1._name}')
-    sleep(0.5)
+    #atributos_settings()
+    #print(f'Que o vento guie sua jornada, {player1._name}')
+    #sleep(0.5)
     posicao()
-    sleep(1)
-    print('teste')
     sleep(1)
     posicao()
 

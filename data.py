@@ -74,18 +74,18 @@ x = '^' #floresta
 y = '▨' #armazém
 z = '⛶' #casa abandonada
 
-mapa_geral = [[a, a, a, a, a, a, a, a, a, a, a, a, a],
-              [a, z, z, z, z, z, z, z, x, x, x, x, a],
-              [a, z, z, z, z, z, z, z, x, x, x, x, a],
-              [a, x, w, w, w, w, w, w, x, x, x, x, a],
-              [a, x, w, x, x, x, x, w, w, w, x, x, a],
-              [a, x, w, x, x, x, x, x, x, w, x, x, a],
-              [a, x, w, x, y, y, y, x ,x, w, x, x, a],
-              [a, x, w, x, y, y, y, x, x, w, x, x, a],
-              [a, x, w, x, x, x, x, x, x, w, x, x, a],
-              [a, a, a, a, a, a, a, a, a, a, a, a, a]]
-
-posicao_player = mapa_geral[player1._yposition][player1._xposition]
+def gerar_mapa0():
+    mapa_geral = [[a, a, a, a, a, a, a, a, a, a, a, a, a],
+                  [a, z, z, z, z, z, z, z, x, x, x, x, a],
+                  [a, z, z, z, z, z, z, z, x, x, x, x, a],
+                  [a, x, w, w, w, w, w, w, x, x, x, x, a],
+                  [a, x, w, x, x, x, x, w, w, w, x, x, a],
+                  [a, x, w, x, x, x, x, x, x, w, x, x, a],
+                  [a, x, w, x, y, y, y, x ,x, w, x, x, a],
+                  [a, x, w, x, y, y, y, x, x, w, x, x, a],
+                  [a, x, w, x, x, x, x, x, x, w, x, x, a],
+                  [a, a, a, a, a, a, a, a, a, a, a, a, a]]
+    return mapa_geral
 
 #i = 8 #(de 0 a 13)
 #j = 2 #(de 0 a 10)
@@ -93,14 +93,23 @@ posicao_player = mapa_geral[player1._yposition][player1._xposition]
 
 DESCRICAO = 'descrição'
 INFO = 'info'
-SIDE_UP = 'foward'
-SIDE_DOWN = 'down', 'back'
-SIDE_LEFT = 'left'
-SIDE_RIGHT = 'right'
 
-#checar as posições nos 4 cantos cardeais pra ver qual o side up, down, left e right
 FLORESTA = {
     'DESCRICAO': None,
+    'INFO': None
+}
+
+ESTRADA = {
+    'DESCRICAO': None,
+    'INFO': None
+}
+
+ARMAZEM = {
+    'DESCRICAO': None,
+    'INFO': None
+}
+
+CASA_ABANDONADA = {
+    'DESCRICAO': None,
     'INFO': None,
-    'SIDE_UP': None,
 }
