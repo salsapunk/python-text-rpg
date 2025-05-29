@@ -23,7 +23,6 @@ def pre_main():
     player1._yposition = 8
 
 mapa0 = gerar_mapa0()
-posicao_player = mapa0[player1._yposition][player1._xposition]
 
 def title_screen():
     pre_main()
@@ -85,14 +84,14 @@ def atributos():
 
 def prompt():
     prompt = input('> ').lower()
-    if prompt not in ['olhar', 'investigar', 'usar', 'pegar', 'inspecionar']:
+    if prompt not in ['olhar', 'investigar', 'usar', 'pegar', 'andar']:
         print('Digite um comando válido!')
     elif prompt == 'sair':
         sys.exit()
     else:
         match prompt:
             case 'olhar':
-                pass
+                descricao(checar_posicao())
             case 'investigar':
                 pass
             case 'usar':
@@ -101,6 +100,20 @@ def prompt():
                 pass
             case 'inspecionar':
                 pass
+            case 'andar':
+                posicao()
+
+def descricão():
+    tile = checar_posicao()
+    match tile:
+        case 'floresta':
+            None
+        case 'caminho':
+            None
+        case 'casa':
+            None
+        case 'armazém':
+            None
 
 def atributos_settings():
     while True:
@@ -122,41 +135,48 @@ def atributos_settings():
             print('Responda com Sim ou Não. Faça novamente!')
             sleep(2)
 
-def checar_posicao():
-    if mapa0[player1._yposition][player1._xposition] == ' ':
-        print()
-        m_neblina = 'A neblina é muito densa, você não consegue enxergar nada. É melhor não se afastar muito.'
-        for caractere in m_neblina:
-            sys.stdout.write(caractere)
-            sys.stdout.flush()
-            sleep(0.05)
-        match player1._xposition:
-            case 12:
-                player1._xposition = 11
-            case 0:
-                player1._xposition = 1
-        match player1._yposition:
-            case 9:
-                player1._yposition = 8
-            case 0:
-                player1._yposition = 1
-        return 'não', ' '
-    elif mapa0[player1._yposition][player1._xposition] == '=':
-        print()
-        print('Você está em uma estrada, o caminho é seguro.')
-        return 'sim', 'estrada'
-    elif mapa0[player1._yposition][player1._xposition] == '^':
-        print()
-        print('Você está no meio da floresta')
-        return 'sim', 'floresta'
-    elif mapa0[player1._yposition][player1._xposition] == '▨':
-        print()
-        print('Você está em um armazém no meio da floresta.')
-        return 'sim', 'armazém'
-    elif mapa0[player1._yposition][player1._xposition] == '⛶':
-        print()
-        print('Você está numa casa abandonada.')
-        return 'sim', 'casa'
+def checar_posicao(posicao_player):
+    if posicao_player == ' ':
+        return 'neblina'
+    elif posicao_player == '=':
+        return 'estrada'
+    elif posicao_player == '^':
+        return 'floresta'
+    elif posicao_player == '▨':
+        return 'armazem'
+    elif posicao_player == '⛶':
+        return 'casa'
+
+def pode_andar():
+    print(checar_posicao(mapa0[player1._yposition][player1._xposition]))
+    match checar_posicao(mapa0[player1._yposition][player1._xposition]):
+        case 'estrada':
+            return 'sim'
+        case 'floresta':
+            return 'sim'
+        case 'caminho':
+            return 'sim'
+        case 'casa':
+            return 'sim'
+        case 'armazém':
+            return 'sim'
+        case 'neblina':
+            mensagem_posicao_limite = 'A neblina está muito densa para esse lado, é melhor não se afastar...'
+            for caractere in mensagem_posicao_limite:
+                sys.stdout.write(caractere)
+                sys.stdout.flush()
+                sleep(0.05)
+            match player1._xposition:
+                case 12:
+                    player1._xposition = 11
+                case 0:
+                    player1._xposition = 1
+            match player1._yposition:
+                case 9:
+                    player1._yposition = 8
+                case 0:
+                    player1._yposition = 1
+            return 'não'
 
 def legenda():
     print("'=' representa a estrada")
@@ -191,7 +211,8 @@ def posicao():
                     player1._yposition -= 1
                 case 'sul':
                     player1._yposition += 1
-            chave, tile = checar_posicao()
+            chave = pode_andar()
+            tile = checar_posicao(mapa0[player1._yposition][player1._xposition])
             if chave == 'sim':
                 match tile: 
                     case 'floresta':
@@ -222,9 +243,9 @@ def setup_game():
     #atributos_settings()
     #print(f'Que o vento guie sua jornada, {player1._name}')
     #sleep(0.5)
-    posicao()
-    sleep(1)
-    posicao()
+    while player1.win == False:
+        prompt()
+    print('Parabéns! Você venceu o jogo!')
 
 
 title_screen()

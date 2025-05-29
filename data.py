@@ -12,6 +12,7 @@ j = 2
 
 class Player:
     def __init__(self):
+        self.win = False
         self._name =  ''
         self._level = 1
         self._hp = 12

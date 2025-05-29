@@ -1,1 +1,5 @@
 deixar o código mais otimizado, retirar repetições
+
+terminar função de descrição
+
+corrigir erro de tile após ele sair da posição e ir para um tile diferente do antigo
