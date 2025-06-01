@@ -86,7 +86,17 @@ def gerar_mapa0():
                   [a, x, w, x, y, y, y, x, x, w, x, x, a],
                   [a, x, w, x, x, x, x, x, x, w, x, x, a],
                   [a, a, a, a, a, a, a, a, a, a, a, a, a]]
-    return mapa_geral
+    mapa_base = [[a, a, a, a, a, a, a, a, a, a, a, a, a],
+                  [a, z, z, z, z, z, z, z, x, x, x, x, a],
+                  [a, z, z, z, z, z, z, z, x, x, x, x, a],
+                  [a, x, w, w, w, w, w, w, x, x, x, x, a],
+                  [a, x, w, x, x, x, x, w, w, w, x, x, a],
+                  [a, x, w, x, x, x, x, x, x, w, x, x, a],
+                  [a, x, w, x, y, y, y, x ,x, w, x, x, a],
+                  [a, x, w, x, y, y, y, x, x, w, x, x, a],
+                  [a, x, w, x, x, x, x, x, x, w, x, x, a],
+                  [a, a, a, a, a, a, a, a, a, a, a, a, a]]
+    return mapa_geral, mapa_base
 
 #i = 8 #(de 0 a 13)
 #j = 2 #(de 0 a 10)

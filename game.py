@@ -22,7 +22,7 @@ def pre_main():
     player1._xposition = 2
     player1._yposition = 8
 
-mapa0 = gerar_mapa0()
+mapa0, mapa0_mostar = gerar_mapa0()
 
 def title_screen():
     pre_main()
@@ -51,6 +51,7 @@ def title_screen_options():
         title_screen()
 
 def mostrar_mapa():
+    mapa0[player1._yposition][player1._xposition] = 'o'
     for tile in mapa0:
         resultado = ' '.join(tile)
         print(resultado)
@@ -108,11 +109,11 @@ def descricão():
     match tile:
         case 'floresta':
             None
-        case 'caminho':
+        case 'estrada':
             None
         case 'casa':
             None
-        case 'armazém':
+        case 'armazem':
             None
 
 def atributos_settings():
@@ -154,11 +155,9 @@ def pode_andar():
             return 'sim'
         case 'floresta':
             return 'sim'
-        case 'caminho':
-            return 'sim'
         case 'casa':
             return 'sim'
-        case 'armazém':
+        case 'armazem':
             return 'sim'
         case 'neblina':
             mensagem_posicao_limite = 'A neblina está muito densa para esse lado, é melhor não se afastar...'
@@ -181,12 +180,11 @@ def pode_andar():
 def legenda():
     print("'=' representa a estrada")
     print("'^' representa a floresta")
-    print("'▨' representa um armazém")
+    print("'▨' representa um armazem")
     print("'⛶' representa uma casa abandonada")
     print("'o' representa onde seu personagem está")
 
 def posicao():
-    mapa0[player1._yposition][player1._xposition] = 'o'
     while True:
         print('Para qual direção gostaria de ir?')
         print('(Ou escreva "Sair" para sair, ou "Mapa" para ver o mapa e as legendas)')
@@ -200,6 +198,7 @@ def posicao():
             mostrar_mapa()
             legenda()
         else:
+            mapa0[8][2] = '='
             xposition_antiga = player1._xposition
             yposition_antiga = player1._yposition
             match prompt_posicao:
@@ -212,14 +211,14 @@ def posicao():
                 case 'sul':
                     player1._yposition += 1
             chave = pode_andar()
-            tile = checar_posicao(mapa0[player1._yposition][player1._xposition])
+            tile = checar_posicao(mapa0_mostar[yposition_antiga][xposition_antiga])
             if chave == 'sim':
-                match tile: 
+                match tile:
                     case 'floresta':
                         mapa0[yposition_antiga][xposition_antiga] = '^'
                     case 'estrada':
                          mapa0[yposition_antiga][xposition_antiga] = '='
-                    case 'armazém':
+                    case 'armazem':
                          mapa0[yposition_antiga][xposition_antiga] = '▨'
                     case 'casa':
                          mapa0[yposition_antiga][xposition_antiga] = '⛶'
