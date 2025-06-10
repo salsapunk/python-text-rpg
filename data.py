@@ -19,7 +19,7 @@ class Player:
         self._arma = []
         self._xposition = j
         self._yposition = i
-        self._inventory = {}
+        self._inventory = []
         self._experience = 0
         self._skills = {
             "Força": '1',
@@ -102,25 +102,26 @@ def gerar_mapa0():
 #j = 2 #(de 0 a 10)
 #player inicia na posição mapa[8][2]
 
-DESCRICAO = 'descrição'
-INFO = 'info'
-
 FLORESTA = {
-    'DESCRICAO': None,
-    'INFO': None
+    'DESCRICAO': 'A floresta é densa e sombria. Ela é perfurada por uma névoa fina. A lama do chão dificulta um pouco seu movimento.',
+    'INFO': 'Algo não está certo. A neblina é quente e não houve chuva alguma. Algo esta errado.',
+    'ITEM:': None
 }
 
 ESTRADA = {
-    'DESCRICAO': None,
-    'INFO': None
+    'DESCRICAO': 'A estrada de barro se estende ao largo, o barro molhado impregna em suas botas.',
+    'INFO': 'Pegadas recém formadas no barro levam para a casa abandonada.',
+    'ITEM:': None
 }
 
 ARMAZEM = {
-    'DESCRICAO': None,
-    'INFO': None
+    'DESCRICAO': 'Um armazém velho de madeira caindo aos pedaços. Os cantos são habitados por aranhas e o chão tem pedaços de vidro quebrados da janela do armazém.',
+    'INFO': 'Velhos caixotes de madeira mofam embaixo da mesa do armazém, talvez eles tenham algo.',
+    'ITEM:': None
 }
 
-CASA_ABANDONADA = {
-    'DESCRICAO': None,
-    'INFO': None,
+CASA = {
+    'DESCRICAO': 'Uma casa abandonada caindo aos pedaços. As venezianas estão quebradas o teto parcialmente no lugar.',
+    'INFO': 'n sei ainda',
+    'ITEM:': None
 }

@@ -84,37 +84,42 @@ def atributos():
             atributos()
 
 def prompt():
+    print('O que deseja fazer? (andar, olhar, investigar, usar, pegar, sair)')
     prompt = input('> ').lower()
-    if prompt not in ['olhar', 'investigar', 'usar', 'pegar', 'andar']:
+    if prompt not in ['olhar', 'investigar', 'usar', 'pegar', 'andar', 'sair']:
         print('Digite um comando válido!')
-    elif prompt == 'sair':
-        sys.exit()
     else:
         match prompt:
             case 'olhar':
-                descricao(checar_posicao())
+                info('DESCRICAO')
             case 'investigar':
-                pass
+                info('INFO')
             case 'usar':
                 pass
             case 'pegar':
+                #pegar()
                 pass
             case 'inspecionar':
                 pass
             case 'andar':
                 posicao()
+            case 'sair':
+                sys.exit()
 
-def descricão():
-    tile = checar_posicao()
+# def pegar(item):
+#     player1._inventory.append(item)
+
+def info(funcao):
+    tile = checar_posicao(mapa0_mostar[player1._yposition][player1._xposition])
     match tile:
         case 'floresta':
-            None
+            print(FLORESTA[f'{funcao}'])
         case 'estrada':
-            None
-        case 'casa':
-            None
+            print(ESTRADA[f'{funcao}'])
         case 'armazem':
-            None
+            print(ARMAZEM[f'{funcao}'])
+        case 'casa':
+            print(CASA[f'{funcao}'])
 
 def atributos_settings():
     while True:
@@ -149,7 +154,7 @@ def checar_posicao(posicao_player):
         return 'casa'
 
 def pode_andar():
-    print(checar_posicao(mapa0[player1._yposition][player1._xposition]))
+    # print(checar_posicao(mapa0[player1._yposition][player1._xposition]))
     match checar_posicao(mapa0[player1._yposition][player1._xposition]):
         case 'estrada':
             return 'sim'
