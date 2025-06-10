@@ -155,10 +155,22 @@ def pode_andar():
             return 'sim'
         case 'floresta':
             return 'sim'
-        case 'casa':
-            return 'sim'
         case 'armazem':
             return 'sim'
+        case 'casa':
+            quer_entrar = input('Você gostaria de entrar na casa? (Sim/Não)').lower()
+            while quer_entrar not in ['sim', 'não', 's', 'nao', 'n']:
+                print('Responda com Sim ou Não!')
+                return
+            if quer_entrar in ['sim', 's']:
+                return 'sim'
+            else: 
+                mensagem_nao_casa = 'Você olha assustado para a casa e decide voltar...'
+                for caractere in mensagem_nao_casa:
+                    sys.stdout.write(caractere)
+                    sys.stdout.flush()
+                    
+                return 'não'
         case 'neblina':
             mensagem_posicao_limite = 'A neblina está muito densa para esse lado, é melhor não se afastar...'
             for caractere in mensagem_posicao_limite:
