@@ -112,27 +112,35 @@ def prompt():
             case 'personagem':
                 menu_personagem()
             case 'equipar':
-                # item = input('Qual arma gostaria de equipar?')
-                # equipar(item)
-                pass
+                item = input('Qual arma gostaria de equipar?')
+                equipar(item)
             case 'sair':
                 sys.exit()
 
 #NÃO FUNCIONA
-# def equipar(item):
-#     inventario = player1._armas
-#     equipado = player1._equipado
-#     if item not in inventario:
-#         print('Você não possui esse item!')
-#     else:
-#         if equipado[0].equipped == True:
-#             item_velho = equipado[0]
-#             inventario.append(item_velho)
-#             equipado.remove(item_velho)
-#         inventario.remove(item)
-#         equipado.append(item)
-#         print('O item foi equipado!')
-        
+# def equipar(arma):
+#     lista = player1._armas
+#     print('debug1')
+#     i = 0
+#     len(lista) == x
+#     for a in x:
+#         arma_inventario = lista[i]._name
+#         if arma == arma_inventario:
+#             print('debug2')
+#             inventario = player1._armas
+#             equipado = player1._equipado
+#             if  lista[i].equipped == True:
+#                 print('debug3')
+#                 lista[i].equipped = False
+#                 item_velho = equipado[0]
+#                 inventario.append(item_velho)
+#                 equipado.remove(item_velho)
+#             print('debug4')
+#             equipado.append(arma)
+#             inventario.remove(arma)
+#             print('O item foi equipado!')
+#         i = i+1
+
 
 def pegar(item):
     lugar = puxar_data()
