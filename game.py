@@ -23,6 +23,7 @@ def pre_main():
     player1._yposition = 8
 
 mapa0, mapa0_mostar = gerar_mapa0()
+posicao_player = mapa0_mostar[player1._yposition][player1._xposition]
 
 def title_screen():
     pre_main()
@@ -47,7 +48,7 @@ def title_screen_options():
         sys.exit()
     else:
         print('Comando inválido, tente novamente.')
-        sleep(2)
+        sleep(1)
         title_screen()
 
 def mostrar_mapa():
@@ -64,29 +65,33 @@ def atributos():
         forca = int(input('> '))
         if forca != 0: pontos = pontos - forca
         player1._skills['Força'] = 1 + forca
+        
         print(f'Pontos: {pontos}')
         print(f'Agilidade: 1')
         agilidade = int(input('> '))
         if agilidade != 0: pontos = pontos - agilidade
         player1._skills['Agilidade'] = 1 + agilidade
+        
         print(f'Pontos: {pontos}')
         print(f'Inteligência: 1')
         inteligencia = int(input('> '))
         if inteligencia != 0: pontos = pontos - inteligencia
         player1._skills['Inteligência'] = 1 + inteligencia
+        
         print(f'Pontos: {pontos}')
         print(f'Carisma: 1')
         carisma = int(input('> '))
         if carisma != 0: pontos = pontos - carisma
         player1._skills['Carisma'] = 1 + carisma
+        
         if pontos < 0: 
             print('Houve um erro na distribuição dos atributos, tente novamente.')
             atributos()
 
 def prompt():
-    print('O que deseja fazer? (andar, olhar, investigar, usar, pegar, sair)')
+    print('O que deseja fazer? (andar, olhar, investigar, usar, pegar, personagem, equipar, sair)')
     prompt = input('> ').lower()
-    if prompt not in ['olhar', 'investigar', 'usar', 'pegar', 'andar', 'sair']:
+    if prompt not in ['olhar', 'investigar', 'usar', 'pegar', 'andar', 'sair', 'personagem', 'equipar']:
         print('Digite um comando válido!')
     else:
         match prompt:
@@ -97,38 +102,102 @@ def prompt():
             case 'usar':
                 pass
             case 'pegar':
-                #pegar()
+                item = input('Qual item você quer pegar?\n >')
+                pegar(item)
                 pass
             case 'inspecionar':
                 pass
             case 'andar':
                 posicao()
+            case 'personagem':
+                menu_personagem()
+            case 'equipar':
+                # item = input('Qual arma gostaria de equipar?')
+                # equipar(item)
+                pass
             case 'sair':
                 sys.exit()
 
-# def pegar(item):
-#     player1._inventory.append(item)
+#NÃO FUNCIONA
+# def equipar(item):
+#     inventario = player1._armas
+#     equipado = player1._equipado
+#     if item not in inventario:
+#         print('Você não possui esse item!')
+#     else:
+#         if equipado[0].equipped == True:
+#             item_velho = equipado[0]
+#             inventario.append(item_velho)
+#             equipado.remove(item_velho)
+#         inventario.remove(item)
+#         equipado.append(item)
+#         print('O item foi equipado!')
+        
+
+def pegar(item):
+    lugar = puxar_data()
+    #NÃO FUNCIONA
+    if item == lugar['ITEM']:
+        player1._inventory.append(item)
+        lugar['ITEM'] = 'None'
+
+def mostrar_skills():
+    for atributos in player1._skills:
+        for value in player1._skills[atributos]:
+            if atributos == 'Carisma':
+                print(f'{atributos}: {''.join(value)}.')
+            else:
+                print(f'{atributos}: {''.join(value)};')
+
+def menu_personagem():
+    armas = []
+    lista = player1._armas
+    i = 0
+    while i < len(lista):
+        arma = str(lista[i]._name)
+        armas.append(arma)
+        i = i + 1
+    
+    print('-' * 29)
+    print('Menu do personagem')
+    print(f'Nome: {player1._name}')
+    print(f'Level: {player1._level}')
+    print(f'Vida: {player1._hp}')
+    print(f'Experiência: {player1._experience}')
+    print(f'Arma equipada: {player1._equipado[0]._name}')
+    print(f'Armas não equipadas: {' ,'.join(armas)}')
+    print(f'Invetário: {', '.join(player1._inventory)}')
+    mostrar_skills()
+    print('-' * 29)
+    
+
+def usar():
+    item = input('Qual item gostaria de usar?\n >')
+    if item not in player1._inventory:
+        print('Você não possui esse item!')
+    else:
+        print(f'Você usou {item}')
 
 def info(funcao):
-    tile = checar_posicao(mapa0_mostar[player1._yposition][player1._xposition])
+    lugar = puxar_data()
+    print(lugar[funcao])
+    
+def puxar_data():
+    tile = checar_posicao(posicao_player)
     match tile:
         case 'floresta':
-            print(FLORESTA[f'{funcao}'])
-        case 'estrada':
-            print(ESTRADA[f'{funcao}'])
+            return FLORESTA
         case 'armazem':
-            print(ARMAZEM[f'{funcao}'])
+            return ARMAZEM
         case 'casa':
-            print(CASA[f'{funcao}'])
+            return CASA
+        case 'estrada':
+            return ESTRADA
 
 def atributos_settings():
     while True:
         os.system(os_var)
-        q2 = 'Distribua três pontos entre os seguintes atributos, que já começam com 1 \n'
-        for caractere in q2:
-            sys.stdout.write(caractere)
-            sys.stdout.flush()
-            sleep(0.05)
+        print('Distribua três pontos entre os seguintes atributos, que já começam com 1 \n')
         atributos()
         print(player1._skills)
         print('Tem certeza da distribuição dos atributos?')
@@ -136,6 +205,7 @@ def atributos_settings():
         if r in ['nao', 'não', 'n']:
             print('Tente novamente')
         elif r in ['sim', 's']:
+            os.system(os_var)
             break
         else:
             print('Responda com Sim ou Não. Faça novamente!')
@@ -154,7 +224,7 @@ def checar_posicao(posicao_player):
         return 'casa'
 
 def pode_andar():
-    # print(checar_posicao(mapa0[player1._yposition][player1._xposition]))
+    #DEBUG print(checar_posicao(mapa0[player1._yposition][player1._xposition]))
     match checar_posicao(mapa0[player1._yposition][player1._xposition]):
         case 'estrada':
             return 'sim'
@@ -247,18 +317,12 @@ def posicao():
 
 
 def setup_game():
-    #os.system(os_var)
-    #q1 = 'Qual o nome do seu personagem? \n'
-    #for caractere in q1:
-    #    sys.stdout.write(caractere)
-    #    sys.stdout.flush()
-    #    sleep(0.05)
-    #name = input('> ')
-    #player1._name = name
-
-    #atributos_settings()
-    #print(f'Que o vento guie sua jornada, {player1._name}')
-    #sleep(0.5)
+    os.system(os_var)
+    # print('Qual o nome do seu personagem? \n')
+    # name = input('> ')
+    # player1._name = name
+    # atributos_settings()
+    # print(f'Que o vento guie sua jornada, {player1._name}')
     while player1.win == False:
         prompt()
     print('Parabéns! Você venceu o jogo!')
