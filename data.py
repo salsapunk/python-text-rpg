@@ -10,29 +10,6 @@ d4 = randint(1, 4)
 i = 8
 j = 2
 
-class Player:
-    def __init__(self):
-        self.win = False
-        self._name =  ''
-        self._level = 1
-        self._hp = 12
-        self._arma = []
-        self._xposition = j
-        self._yposition = i
-        self._inventory = {}
-        self._experience = 0
-        self._skills = {
-            "Força": '1',
-            "Agilidade": '1',
-            "Inteligência": '1',
-            "Carisma": '1'
-        }
-    
-    def __str__(self):
-        return self._name
-
-player1 = Player()
-
 class Inimigo:
     def __init__(self, name, level, hp, arma, skills):
         self._name = name
@@ -62,12 +39,41 @@ class Item:
         return self._name
 
 class Arma(Item):
-    def __init__(self):
+    def __init__(self, name, description, tipo, value, damage):
         super().__init__(name, description, tipo, value)
         self.equipped = False
+        self._damage = damage
     
     def __str__(self):
         return self._name
+
+espada_longa = Arma('Espada longa', 'Uma espada com uma lâmina grande e afiada', 'Corpo-a-copro', '50', d8)
+espada_longa.equipped = True
+arco = Arma('Arco', 'Um arco', 'Distância', '50', d6)
+
+class Player:
+    def __init__(self):
+        self.win = False
+        self._name =  ''
+        self._level = 1
+        self._hp = 12
+        self._equipado = [espada_longa]
+        self._armas = [arco]
+        self._xposition = j
+        self._yposition = i
+        self._inventory = ['Escudo', 'Mapa']
+        self._experience = 0
+        self._skills = {
+            "Força": '1',
+            "Agilidade": '1',
+            "Inteligência": '1',
+            "Carisma": '1'
+        }
+    
+    def __str__(self):
+        return self._name
+
+player1 = Player()
 
 a = ' ' #limitando a movimentação
 w = '=' #estrada
@@ -102,25 +108,26 @@ def gerar_mapa0():
 #j = 2 #(de 0 a 10)
 #player inicia na posição mapa[8][2]
 
-DESCRICAO = 'descrição'
-INFO = 'info'
-
 FLORESTA = {
-    'DESCRICAO': None,
-    'INFO': None
+    'DESCRICAO': 'A floresta é densa e sombria. Ela é perfurada por uma névoa fina. A lama do chão dificulta um pouco seu movimento.',
+    'INFO': 'Algo não está certo. A neblina é quente e não houve chuva alguma. Algo esta errado.',
+    'ITEM': None
 }
 
 ESTRADA = {
-    'DESCRICAO': None,
-    'INFO': None
+    'DESCRICAO': 'A estrada de barro se estende ao largo, o barro molhado impregna em suas botas.',
+    'INFO': 'Pegadas recém formadas no barro levam para a casa abandonada.',
+    'ITEM': 'espada'
 }
 
 ARMAZEM = {
-    'DESCRICAO': None,
-    'INFO': None
+    'DESCRICAO': 'Um armazém velho de madeira caindo aos pedaços. Têm alguns caixotes no canto da sala.',
+    'INFO': 'Dentro dos caixotes tem uma chave que parece de uma casa.',
+    'ITEM': 'chave média'
 }
 
-CASA_ABANDONADA = {
-    'DESCRICAO': None,
-    'INFO': None,
+CASA = {
+    'DESCRICAO': 'Uma casa abandonada caindo aos pedaços. As venezianas estão quebradas o teto parcialmente no lugar.',
+    'INFO': 'A porta está trancada. Sua fechadura tem um formato de *chave média*.',
+    'ITEM': None
 }
