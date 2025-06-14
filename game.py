@@ -23,10 +23,7 @@ def pre_main():
     player1._yposition = 8
 
 mapa0, mapa0_mostar = gerar_mapa0()
-<<<<<<< HEAD
-=======
 posicao_player = mapa0_mostar[player1._yposition][player1._xposition]
->>>>>>> 61542436b7e0e74aa45dd2157cc6099d3460b056
 
 def title_screen():
     pre_main()
@@ -103,7 +100,8 @@ def prompt():
             case 'investigar':
                 info('INFO')
             case 'usar':
-                pass
+                item = input('Qual item gostaria de usar?\n >')
+                usar(item)
             case 'pegar':
                 item = input('Qual item você quer pegar?\n >')
                 pegar(item)
@@ -120,29 +118,24 @@ def prompt():
             case 'sair':
                 sys.exit()
 
-#NÃO FUNCIONA
-# def equipar(arma):
-#     lista = player1._armas
-#     print('debug1')
-#     i = 0
-#     len(lista) == x
-#     for a in x:
-#         arma_inventario = lista[i]._name
-#         if arma == arma_inventario:
-#             print('debug2')
-#             inventario = player1._armas
-#             equipado = player1._equipado
-#             if  lista[i].equipped == True:
-#                 print('debug3')
-#                 lista[i].equipped = False
-#                 item_velho = equipado[0]
-#                 inventario.append(item_velho)
-#                 equipado.remove(item_velho)
-#             print('debug4')
-#             equipado.append(arma)
-#             inventario.remove(arma)
-#             print('O item foi equipado!')
-#         i = i+1
+def equipar(arma):
+    inventario = player1._armas
+    equipado = player1._equipado
+    i = 0
+    while i < len(inventario):
+        arma_inventario = inventario[i]._name.lower()
+        arma.lower()
+        if arma == arma_inventario:
+            equipavel = inventario[i]
+            if equipado[0]._equipped == True:
+                equipado[0]._equipped = False
+                item_velho = equipado[0]
+                inventario.append(item_velho)
+                equipado.remove(item_velho)
+            equipado.append(equipavel)
+            inventario.remove(equipavel)
+            print('O item foi equipado!')
+        i = i+1
 
 
 def pegar(item):
@@ -165,10 +158,9 @@ def menu_personagem():
     lista = player1._armas
     i = 0
     while i < len(lista):
-        arma = str(lista[i]._name)
+        arma = lista[i]._name
         armas.append(arma)
         i = i + 1
-    
     print('-' * 29)
     print('Menu do personagem')
     print(f'Nome: {player1._name}')
@@ -176,14 +168,13 @@ def menu_personagem():
     print(f'Vida: {player1._hp}')
     print(f'Experiência: {player1._experience}')
     print(f'Arma equipada: {player1._equipado[0]._name}')
-    print(f'Armas não equipadas: {' ,'.join(armas)}')
+    print(f'Armas no inventário: {' ,'.join(armas)}')
     print(f'Invetário: {', '.join(player1._inventory)}')
     mostrar_skills()
     print('-' * 29)
     
-
-def usar():
-    item = input('Qual item gostaria de usar?\n >')
+#MELHORAR
+def usar(item):
     if item not in player1._inventory:
         print('Você não possui esse item!')
     else:
@@ -197,15 +188,6 @@ def puxar_data():
     tile = checar_posicao(posicao_player)
     match tile:
         case 'floresta':
-<<<<<<< HEAD
-            None
-        case 'estrada':
-            None
-        case 'casa':
-            None
-        case 'armazem':
-            None
-=======
             return FLORESTA
         case 'armazem':
             return ARMAZEM
@@ -213,7 +195,6 @@ def puxar_data():
             return CASA
         case 'estrada':
             return ESTRADA
->>>>>>> 61542436b7e0e74aa45dd2157cc6099d3460b056
 
 def atributos_settings():
     while True:
@@ -251,12 +232,6 @@ def pode_andar():
             return 'sim'
         case 'floresta':
             return 'sim'
-<<<<<<< HEAD
-        case 'casa':
-            return 'sim'
-        case 'armazem':
-            return 'sim'
-=======
         case 'armazem':
             return 'sim'
         case 'casa':
@@ -267,13 +242,8 @@ def pode_andar():
             if quer_entrar in ['sim', 's']:
                 return 'sim'
             else: 
-                mensagem_nao_casa = 'Você olha assustado para a casa e decide voltar...'
-                for caractere in mensagem_nao_casa:
-                    sys.stdout.write(caractere)
-                    sys.stdout.flush()
-                    
+                print('Você olha assustado para a casa e decide voltar...')
                 return 'não'
->>>>>>> 61542436b7e0e74aa45dd2157cc6099d3460b056
         case 'neblina':
             mensagem_posicao_limite = 'A neblina está muito densa para esse lado, é melhor não se afastar...'
             for caractere in mensagem_posicao_limite:

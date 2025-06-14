@@ -39,17 +39,16 @@ class Item:
         return self._name
 
 class Arma(Item):
-    def __init__(self, name, description, tipo, value, damage):
+    def __init__(self, name, description, tipo, value, equipped, damage):
         super().__init__(name, description, tipo, value)
-        self.equipped = False
+        self._equipped = equipped
         self._damage = damage
     
     def __str__(self):
         return self._name
 
-espada_longa = Arma('Espada longa', 'Uma espada com uma lâmina grande e afiada', 'Corpo-a-copro', '50', d8)
-espada_longa.equipped = True
-arco = Arma('Arco', 'Um arco', 'Distância', '50', d6)
+espada_longa = Arma('Espada longa', 'Uma espada com uma lâmina grande e afiada', 'Corpo-a-copro', '50', True, d8)
+arco = Arma('Arco', 'Um arco', 'Distância', '50', False, d6)
 
 class Player:
     def __init__(self):
@@ -72,6 +71,12 @@ class Player:
     
     def __str__(self):
         return self._name
+    
+    def inventario_armas(self):
+        lista = []
+        for arma in self._armas:
+            lista.append(arma._name)
+        return lista
 
 player1 = Player()
 
