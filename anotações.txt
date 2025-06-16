@@ -1,7 +1,5 @@
 deixar o código mais otimizado, retirar repetições
 
-<<<<<<< HEAD
-terminar função de descrição
-=======
 botar uma "barreira" na casa, onde quando o jogador confirmar que quer entrar, o mapa muda para o mapa da casa
->>>>>>> 61542436b7e0e74aa45dd2157cc6099d3460b056
+
+diminuir o mapa, muito cansativo andar por ele

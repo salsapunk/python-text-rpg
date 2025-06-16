@@ -137,10 +137,8 @@ def equipar(arma):
             print('O item foi equipado!')
         i = i+1
 
-
 def pegar(item):
     lugar = puxar_data()
-    #NÃO FUNCIONA
     if item == lugar['ITEM']:
         player1._inventory.append(item)
         lugar['ITEM'] = 'None'
@@ -175,9 +173,17 @@ def menu_personagem():
     
 #MELHORAR
 def usar(item):
+    lugar = puxar_data()
     if item not in player1._inventory:
         print('Você não possui esse item!')
+    elif item != lugar['ITEM_USAVEL']:
+        print('Você não pode usar esse item aqui.')
     else:
+        match lugar:
+            case CASA:
+                CASA['PORTA_FECHADA'] = False
+                print('Você destrancou a porta.')
+                
         print(f'Você usou {item}')
 
 def info(funcao):
@@ -235,15 +241,20 @@ def pode_andar():
         case 'armazem':
             return 'sim'
         case 'casa':
-            quer_entrar = input('Você gostaria de entrar na casa? (Sim/Não)').lower()
-            while quer_entrar not in ['sim', 'não', 's', 'nao', 'n']:
-                print('Responda com Sim ou Não!')
-                return
-            if quer_entrar in ['sim', 's']:
-                return 'sim'
-            else: 
-                print('Você olha assustado para a casa e decide voltar...')
+            if CASA['PORTA_FECHADA']:
+                print(CASA['INFO'])
                 return 'não'
+            else:
+                quer_entrar = input('Você gostaria de entrar?').lower()
+                while quer_entrar not in ['sim', 'não', 's', 'nao', 'n']:
+                    print('Responda com Sim ou Não!')
+                    return
+                if quer_entrar in ['sim', 's']:
+                    #mudar mapa para lugar_novo
+                    return 'sim'
+                else: 
+                    print('Você olha assustado para a casa e decide voltar...')
+                    return 'não'
         case 'neblina':
             mensagem_posicao_limite = 'A neblina está muito densa para esse lado, é melhor não se afastar...'
             for caractere in mensagem_posicao_limite:

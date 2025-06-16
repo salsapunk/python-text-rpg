@@ -60,7 +60,7 @@ class Player:
         self._armas = [arco]
         self._xposition = j
         self._yposition = i
-        self._inventory = ['Escudo', 'Mapa']
+        self._inventory = ['Escudo', 'Mapa', 'Chave média']
         self._experience = 0
         self._skills = {
             "Força": '1',
@@ -122,17 +122,19 @@ FLORESTA = {
 ESTRADA = {
     'DESCRICAO': 'A estrada de barro se estende ao largo, o barro molhado impregna em suas botas.',
     'INFO': 'Pegadas recém formadas no barro levam para a casa abandonada.',
-    'ITEM': 'espada'
+    'ITEM': None
 }
 
 ARMAZEM = {
     'DESCRICAO': 'Um armazém velho de madeira caindo aos pedaços. Têm alguns caixotes no canto da sala.',
     'INFO': 'Dentro dos caixotes tem uma chave que parece de uma casa.',
-    'ITEM': 'chave média'
+    'ITEM': 'Chave média'
 }
 
 CASA = {
     'DESCRICAO': 'Uma casa abandonada caindo aos pedaços. As venezianas estão quebradas o teto parcialmente no lugar.',
-    'INFO': 'A porta está trancada. Sua fechadura tem um formato de *chave média*.',
-    'ITEM': None
+    'INFO': 'A porta está trancada. Sua fechadura tem um formato de uma *chave média*.',
+    'ITEM': None,
+    'ITEM_USAVEL': 'Chave média',
+    'PORTA_FECHADA': True
 }
