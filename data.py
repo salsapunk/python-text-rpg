@@ -7,8 +7,6 @@ d8 = randint(1, 8)
 d6 = randint(1, 6)
 d4 = randint(1, 4)
 
-i = 8
-j = 2
 
 class Inimigo:
     def __init__(self, name, level, hp, arma, skills):
@@ -58,9 +56,9 @@ class Player:
         self._hp = 12
         self._equipado = [espada_longa]
         self._armas = [arco]
-        self._xposition = j
-        self._yposition = i
-        self._inventory = ['Escudo', 'Mapa', 'Chave média']
+        self.xposition = ''
+        self.yposition = ''
+        self._inventory = ['escudo', 'mapa', 'chave média']
         self._experience = 0
         self._skills = {
             "Força": '1',
@@ -68,7 +66,7 @@ class Player:
             "Inteligência": '1',
             "Carisma": '1'
         }
-    
+
     def __str__(self):
         return self._name
     
@@ -79,6 +77,8 @@ class Player:
         return lista
 
 player1 = Player()
+player1.xposition = 2
+player1.yposition = 5
 
 a = ' ' #limitando a movimentação
 w = '=' #estrada
@@ -87,26 +87,21 @@ y = '▨' #armazém
 z = '⛶' #casa abandonada
 
 def gerar_mapa0():
-    mapa_geral = [[a, a, a, a, a, a, a, a, a, a, a, a, a],
-                  [a, z, z, z, z, z, z, z, x, x, x, x, a],
-                  [a, z, z, z, z, z, z, z, x, x, x, x, a],
-                  [a, x, w, w, w, w, w, w, x, x, x, x, a],
-                  [a, x, w, x, x, x, x, w, w, w, x, x, a],
-                  [a, x, w, x, x, x, x, x, x, w, x, x, a],
-                  [a, x, w, x, y, y, y, x ,x, w, x, x, a],
-                  [a, x, w, x, y, y, y, x, x, w, x, x, a],
-                  [a, x, w, x, x, x, x, x, x, w, x, x, a],
-                  [a, a, a, a, a, a, a, a, a, a, a, a, a]]
-    mapa_base = [[a, a, a, a, a, a, a, a, a, a, a, a, a],
-                  [a, z, z, z, z, z, z, z, x, x, x, x, a],
-                  [a, z, z, z, z, z, z, z, x, x, x, x, a],
-                  [a, x, w, w, w, w, w, w, x, x, x, x, a],
-                  [a, x, w, x, x, x, x, w, w, w, x, x, a],
-                  [a, x, w, x, x, x, x, x, x, w, x, x, a],
-                  [a, x, w, x, y, y, y, x ,x, w, x, x, a],
-                  [a, x, w, x, y, y, y, x, x, w, x, x, a],
-                  [a, x, w, x, x, x, x, x, x, w, x, x, a],
-                  [a, a, a, a, a, a, a, a, a, a, a, a, a]]
+    mapa_geral = [[a, a, a, a, a, a, a],
+                  [a, z, z, z, x, x, a],
+                  [a, x, w, w, w, w, a],
+                  [a, x, w, x, x, x, a],
+                  [a, x, z, x, y, x, a],
+                  [a, x, w, x, x, x, a],
+                  [a, a, a, a, a, a, a]]
+    
+    mapa_base =  [[a, a, a, a, a, a, a],
+                  [a, z, z, z, x, x, a],
+                  [a, x, w, w, w, w, a],
+                  [a, x, w, x, x, x, a],
+                  [a, x, z, x, y, x, a],
+                  [a, x, w, x, x, x, a],
+                  [a, a, a, a, a, a, a]]
     return mapa_geral, mapa_base
 
 #i = 8 #(de 0 a 13)
@@ -135,6 +130,6 @@ CASA = {
     'DESCRICAO': 'Uma casa abandonada caindo aos pedaços. As venezianas estão quebradas o teto parcialmente no lugar.',
     'INFO': 'A porta está trancada. Sua fechadura tem um formato de uma *chave média*.',
     'ITEM': None,
-    'ITEM_USAVEL': 'Chave média',
+    'ITEM_USAVEL': 'chave média',
     'PORTA_FECHADA': True
 }

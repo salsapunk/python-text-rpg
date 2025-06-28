@@ -1,5 +1,3 @@
 deixar o código mais otimizado, retirar repetições
 
-botar uma "barreira" na casa, onde quando o jogador confirmar que quer entrar, o mapa muda para o mapa da casa
-
-diminuir o mapa, muito cansativo andar por ele
+fazer o mapa da casa e mudar o mapa0 e mapa0_mostrar, economizando variáveis
