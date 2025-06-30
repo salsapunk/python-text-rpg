@@ -80,29 +80,60 @@ player1 = Player()
 player1.xposition = 2
 player1.yposition = 5
 
-a = ' ' #limitando a movimentação
+#geral
+a = ' ' #neblina --limitando a movimentação
+b = '▢' #parede --limitando a movimentação
+
+#mapa0 --floresta neblinosa
 w = '=' #estrada
 x = '^' #floresta
 y = '▨' #armazém
 z = '⛶' #casa abandonada
 
-def gerar_mapa0():
-    mapa_geral = [[a, a, a, a, a, a, a],
-                  [a, z, z, z, x, x, a],
-                  [a, x, w, w, w, w, a],
-                  [a, x, w, x, x, x, a],
-                  [a, x, z, x, y, x, a],
-                  [a, x, w, x, x, x, a],
-                  [a, a, a, a, a, a, a]]
-    
-    mapa_base =  [[a, a, a, a, a, a, a],
-                  [a, z, z, z, x, x, a],
-                  [a, x, w, w, w, w, a],
-                  [a, x, w, x, x, x, a],
-                  [a, x, z, x, y, x, a],
-                  [a, x, w, x, x, x, a],
-                  [a, a, a, a, a, a, a]]
-    return mapa_geral, mapa_base
+#mapa1 --dentro da casa
+r = ' ' #representa o caminho andável pelo personagem
+s = '#' #representa um lugar bloqueado por entulhos (fazer função para retirar)
+
+def gerar_mapa(mapa):
+    match mapa:
+        case 0:
+            mapa_geral = [[a, a, a, a, a, a, a],
+                          [a, z, z, z, x, x, a],
+                          [a, x, w, w, w, w, a],
+                          [a, x, w, x, x, x, a],
+                          [a, x, z, x, y, x, a],
+                          [a, x, w, x, x, x, a],
+                          [a, a, a, a, a, a, a]]
+
+            mapa_base =  [[a, a, a, a, a, a, a],
+                          [a, z, z, z, x, x, a],
+                          [a, x, w, w, w, w, a],
+                          [a, x, w, x, x, x, a],
+                          [a, x, z, x, y, x, a],
+                          [a, x, w, x, x, x, a],
+                          [a, a, a, a, a, a, a]]
+            
+            mapa_atual = 0
+            return mapa_geral, mapa_base, mapa_atual
+        case 1:
+            mapa_geral = [[b, b, b, b, b, b, b],
+                          [b, r, b, r, b, r, b],
+                          [b, s, b, r, b, r, b],
+                          [b, r, r, r, r, r, b],
+                          [b, b, r, b, b, s, b],
+                          [b, b, r, b, b, r, b],
+                          [b, b, b, b, b, b, b]]
+            
+            mapa_base =  [[b, b, b, b, b, b, b],
+                          [b, r, b, r, b, r, b],
+                          [b, s, b, r, b, r, b],
+                          [b, r, r, r, r, r, b],
+                          [b, b, r, b, b, s, b],
+                          [b, b, r, b, b, r, b],
+                          [b, b, b, b, b, b, b]]
+            
+            mapa_atual = 1
+            return mapa_geral, mapa_base, mapa_atual
 
 #i = 8 #(de 0 a 13)
 #j = 2 #(de 0 a 10)

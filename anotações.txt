@@ -1,3 +1,3 @@
 deixar o código mais otimizado, retirar repetições
 
-fazer o mapa da casa e mudar o mapa0 e mapa0_mostrar, economizando variáveis
+fazer interação (investigar, olhar) com tiles que estão adjascentes ao tile do player e não podem ser "pisados"
