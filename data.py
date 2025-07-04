@@ -31,7 +31,7 @@ class Item:
         self._tipo = tipo
         self._value = value
         self.equipped = False
-        self.usable = False
+        self.usable = ''
     
     def __str__(self):
         return self._name
@@ -45,8 +45,14 @@ class Arma(Item):
     def __str__(self):
         return self._name
 
-espada_longa = Arma('Espada longa', 'Uma espada com uma lâmina grande e afiada', 'Corpo-a-copro', '50', True, d8)
-arco = Arma('Arco', 'Um arco', 'Distância', '50', False, d6)
+espada_longa = Arma('Espada longa', 'Uma espada com uma lâmina grande e afiada', 'Corpo-a-copro', 15, True, d8)
+arco = Arma('Arco', 'Um arco', 'Distância', 10, False, d6)
+flecha = Item('Flecha', 'Flecha para o arco', 'Consumível', 5)
+flecha.usable = True
+pocao = Item('Poção', 'Poção que restaura vida.', 'Consumível', 20)
+pocao.usable = True
+esmeralda = Item('Esmeralda', 'Uma esmeralda valiosa.', 'Vendível', 250)
+
 
 class Player:
     def __init__(self):
@@ -58,7 +64,7 @@ class Player:
         self._armas = [arco]
         self.xposition = ''
         self.yposition = ''
-        self._inventory = ['escudo', 'mapa', 'chave média']
+        self._inventory = ['escudo', 'mapa', 'chave']
         self._experience = 0
         self._skills = {
             "Força": '1',
@@ -93,15 +99,20 @@ z = '⛶' #casa abandonada
 #mapa1 --dentro da casa
 r = ' ' #representa o caminho andável pelo personagem
 s = '#' #representa um lugar bloqueado por entulhos (fazer função para retirar)
+p = ']' #porta para o mapa1
 
-def gerar_mapa(mapa):
-    match mapa:
+#mapa de itens
+c = 'chave'
+i = 'item'
+
+def gerar_mapa(numero):
+    match numero:
         case 0:
             mapa_geral = [[a, a, a, a, a, a, a],
                           [a, z, z, z, x, x, a],
                           [a, x, w, w, w, w, a],
                           [a, x, w, x, x, x, a],
-                          [a, x, z, x, y, x, a],
+                          [a, x, w, x, y, x, a],
                           [a, x, w, x, x, x, a],
                           [a, a, a, a, a, a, a]]
 
@@ -109,58 +120,80 @@ def gerar_mapa(mapa):
                           [a, z, z, z, x, x, a],
                           [a, x, w, w, w, w, a],
                           [a, x, w, x, x, x, a],
-                          [a, x, z, x, y, x, a],
+                          [a, x, w, x, y, x, a],
                           [a, x, w, x, x, x, a],
                           [a, a, a, a, a, a, a]]
             
+            mapa_items = [[a, a, a, a, a, a, a],
+                          [a, a, a, a, a, a, a],
+                          [a, i, a, a, a, i, a],
+                          [a, a, a, a, a, a, a],
+                          [a, a, a, a, c, a, a],
+                          [a, a, i, a, a, a, a],
+                          [a, a, a, a, a, a, a]]
+
             mapa_atual = 0
-            return mapa_geral, mapa_base, mapa_atual
+            return mapa_geral, mapa_base, mapa_atual, 2, 5, mapa_items
         case 1:
             mapa_geral = [[b, b, b, b, b, b, b],
-                          [b, r, b, r, b, r, b],
-                          [b, s, b, r, b, r, b],
-                          [b, r, r, r, r, r, b],
-                          [b, b, r, b, b, s, b],
-                          [b, b, r, b, b, r, b],
+                          [b, b, r, b, r, b, b],
+                          [b, b, s, b, r, b, b],
+                          [b, p, r, r, r, r, b],
+                          [b, b, r, b, s, b, b],
+                          [b, b, r, b, r, b, b],
                           [b, b, b, b, b, b, b]]
             
             mapa_base =  [[b, b, b, b, b, b, b],
-                          [b, r, b, r, b, r, b],
-                          [b, s, b, r, b, r, b],
-                          [b, r, r, r, r, r, b],
-                          [b, b, r, b, b, s, b],
-                          [b, b, r, b, b, r, b],
+                          [b, b, r, b, r, b, b],
+                          [b, b, s, b, r, b, b],
+                          [b, p, r, r, r, r, b],
+                          [b, b, r, b, s, b, b],
+                          [b, b, r, b, r, b, b],
                           [b, b, b, b, b, b, b]]
-            
-            mapa_atual = 1
-            return mapa_geral, mapa_base, mapa_atual
 
-#i = 8 #(de 0 a 13)
-#j = 2 #(de 0 a 10)
-#player inicia na posição mapa[8][2]
+            mapa_items = [[a, a, a, a, a, a, a],
+                          [a, a, c, a, i, a, a],
+                          [a, a, a, a, a, a, a],
+                          [a, a, a, a, a, a, a],
+                          [a, a, a, a, a, a, a],
+                          [a, a, i, a, i, a, a],
+                          [a, a, a, a, a, a, a]]
+
+            mapa_atual = 1
+            return mapa_geral, mapa_base, mapa_atual, 1, 3, mapa_items
 
 FLORESTA = {
     'DESCRICAO': 'A floresta é densa e sombria. Ela é perfurada por uma névoa fina. A lama do chão dificulta um pouco seu movimento.',
     'INFO': 'Algo não está certo. A neblina é quente e não houve chuva alguma. Algo esta errado.',
-    'ITEM': None
 }
 
 ESTRADA = {
     'DESCRICAO': 'A estrada de barro se estende ao largo, o barro molhado impregna em suas botas.',
     'INFO': 'Pegadas recém formadas no barro levam para a casa abandonada.',
-    'ITEM': None
 }
 
 ARMAZEM = {
     'DESCRICAO': 'Um armazém velho de madeira caindo aos pedaços. Têm alguns caixotes no canto da sala.',
     'INFO': 'Dentro dos caixotes tem uma chave que parece de uma casa.',
-    'ITEM': 'Chave média'
 }
 
 CASA = {
     'DESCRICAO': 'Uma casa abandonada caindo aos pedaços. As venezianas estão quebradas o teto parcialmente no lugar.',
     'INFO': 'A porta está trancada. Sua fechadura tem um formato de uma *chave média*.',
-    'ITEM': None,
-    'ITEM_USAVEL': 'chave média',
+    'ITEM_USAVEL': 'chave',
     'PORTA_FECHADA': True
+}
+
+ESPACO = {
+    'ITEM_USAVEL': 'l'
+}
+
+CHAVE = {
+    'ITEM': 'chave'
+}
+
+lista_itens = [pocao, pocao, flecha, flecha, flecha, esmeralda]
+
+ITEM = {
+    'ITEM': lista_itens[d6-1]
 }

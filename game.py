@@ -89,11 +89,7 @@ def prompt():
                 item = input('Qual item gostaria de usar?\n>')
                 usar(item)
             case 'pegar':
-                item = input('Qual item você quer pegar?\n>')
-                pegar(item)
-                pass
-            case 'inspecionar':
-                pass
+                pegar()
             case 'andar':
                 posicao()
             case 'personagem':
@@ -121,13 +117,7 @@ def equipar(arma):
             equipado.append(equipavel)
             inventario.remove(equipavel)
             print('O item foi equipado!')
-        i = i+1
-
-def pegar(item):
-    lugar = puxar_data()
-    if item == lugar['ITEM']:
-        player1._inventory.append(item)
-        lugar['ITEM'] = 'None'
+        i = i+1        
 
 def mostrar_skills():
     for atributos in player1._skills:
@@ -150,9 +140,7 @@ def menu_personagem():
     print(f'Invetário: {', '.join(player1._inventory)}')
     mostrar_skills()
     print('-' * 29)
-    
-#MELHORAR
-#lugar['ITEM_USAVEL] não funciona
+
 def usar(item):
     lugar = puxar_data()
     inventario = []
@@ -172,21 +160,46 @@ def usar(item):
                 escolher_mapa()
 
 def info(funcao):
-    lugar = puxar_data()
-    print(lugar[funcao])
+    if posicao_player_itens == 'chave':
+        if funcao == 'INFO':
+            mensagem_tesouro()
+    else:
+        lugar = puxar_data()
+        print(lugar[funcao])
+    
+def definir_mapa(numero):
+    global mapa, mapa_mostrar, mapa_atual, posicaoy, posicaox, mapa_itens
+    mapa, mapa_mostrar, mapa_atual, posicaoy, posicaox, mapa_itens = gerar_mapa(numero)
+    player1.xposition = posicaoy
+    player1.yposition = posicaox
 
-def definir_mapa(x):
-    global mapa, mapa_mostar, mapa_atual
-    mapa, mapa_mostar, mapa_atual = gerar_mapa(x)
-    player1.xposition = 2
-    player1.yposition = 5
+def mensagem_tesouro():
+    match posicao_player_itens:
+        case 'chave':
+            print('Algo está brilhando no chão, parece uma chave.')
+        case 'item':
+            print('Tem algo no chão. Pegue para saber o que é.')
 
 def atualizar_posicao_player():
-    global posicao_player
-    posicao_player = mapa_mostar[player1.yposition][player1.xposition]
+    global posicao_player, posicao_player_itens
+    posicao_player = mapa_mostrar[player1.yposition][player1.xposition]
+    posicao_player_itens = mapa_itens[player1.yposition][player1.xposition]
+    print(posicao_player_itens)
 
 definir_mapa(0)
 atualizar_posicao_player()
+
+def pegar():
+    posicao_player_itens = mapa_itens[player1.yposition][player1.xposition]
+    if posicao_player_itens == 'chave':
+        player1._inventory.append('chave')
+        posicao_player_itens = ' '
+        print('Você pegou uma chave.')
+    elif posicao_player_itens == 'item':
+        item = ITEM['ITEM']
+        player1._inventory.append(item)
+        posicao_player_itens = ' '
+        print(f'Você pegou {item}.')
 
 def mostrar_mapa():
     mapa[player1.yposition][player1.xposition] = 'o'
@@ -269,15 +282,13 @@ def pode_andar():
 def mudar_mapa():
     lugar = puxar_data()
     if lugar['PORTA_FECHADA'] == False:
-        quer_entrar = input('Você gostaria de entrar?').lower()
+        quer_entrar = input('Você gostaria de entrar?\n>').lower()
         while quer_entrar not in ['sim', 'não', 's', 'nao', 'n']:
             print('Responda com Sim ou Não!')
         if quer_entrar in ['sim', 's']:
-            print('debug foi')
             match lugar:
                 case CASA:
                     if mapa_atual == 0:
-                        print('1')
                         return 1
                     elif mapa_atual == 1:
                         return 0
@@ -290,6 +301,7 @@ def escolher_mapa():
     mapa = definir_mapa(mudar_mapa())
 
 def legenda():
+    print(posicao_player_itens)
     match mapa_atual:
         case 0:
             print("'=' representa a estrada")
@@ -318,9 +330,9 @@ def posicao():
             legenda()
         else:
             if mapa_atual == 0:
-                mapa[5][2] = '='
+                mapa[posicaoy][posicaox] = '='
             else:
-                mapa[5][2] = ' '
+                mapa[posicaoy][posicaox] = ' '
             xposition_antiga = player1.xposition
             yposition_antiga = player1.yposition
             match prompt_posicao:
@@ -333,7 +345,7 @@ def posicao():
                 case 'sul':
                     player1.yposition += 1
             chave = pode_andar()
-            tile = checar_posicao(mapa_mostar[yposition_antiga][xposition_antiga])
+            tile = checar_posicao(mapa_mostrar[yposition_antiga][xposition_antiga])
             if chave == 'sim':
                 match tile:
                     case 'floresta':
