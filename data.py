@@ -45,8 +45,8 @@ class Arma(Item):
     def __str__(self):
         return self._name
 
-espada_longa = Arma('Espada longa', 'Uma espada com uma lâmina grande e afiada', 'Corpo-a-copro', 15, True, d8)
-arco = Arma('Arco', 'Um arco', 'Distância', 10, False, d6)
+espada_longa = Arma('espada longa', 'Uma espada com uma lâmina grande e afiada', 'Corpo-a-copro', 15, True, d8)
+arco = Arma('arco', 'Um arco', 'Distância', 10, False, d6)
 flecha = Item('Flecha', 'Flecha para o arco', 'Consumível', 5)
 flecha.usable = True
 pocao = Item('Poção', 'Poção que restaura vida.', 'Consumível', 20)
@@ -64,7 +64,7 @@ class Player:
         self._armas = [arco]
         self.xposition = ''
         self.yposition = ''
-        self._inventory = ['escudo', 'mapa', 'chave']
+        self._inventory = ['escudo', 'mapa']
         self._experience = 0
         self._skills = {
             "Força": '1',
@@ -78,9 +78,14 @@ class Player:
     
     def inventario_armas(self):
         lista = []
-        for arma in self._armas:
-            lista.append(arma._name)
+        for arma in self._armas: lista.append(arma._name)
         return lista
+    
+    def inventario(self):
+        lista = []
+        for item in self._inventory:
+            if item == Item: lista.append(item._name)
+            else: lista.append(item)
 
 player1 = Player()
 player1.xposition = 2
@@ -173,13 +178,12 @@ ESTRADA = {
 }
 
 ARMAZEM = {
-    'DESCRICAO': 'Um armazém velho de madeira caindo aos pedaços. Têm alguns caixotes no canto da sala.',
-    'INFO': 'Dentro dos caixotes tem uma chave que parece de uma casa.',
+    'DESCRICAO': 'Um armazém velho de madeira caindo aos pedaços. Têm alguns caixotes no canto da sala.'
 }
 
 CASA = {
     'DESCRICAO': 'Uma casa abandonada caindo aos pedaços. As venezianas estão quebradas o teto parcialmente no lugar.',
-    'INFO': 'A porta está trancada. Sua fechadura tem um formato de uma *chave média*.',
+    'INFO': 'A porta está trancada.',
     'ITEM_USAVEL': 'chave',
     'PORTA_FECHADA': True
 }

@@ -2,62 +2,10 @@ deixar o código mais otimizado, retirar repetições
 
 fazer interação (investigar, olhar) com tiles que estão adjascentes ao tile do player e não podem ser "pisados"
 
-fazer um mapa só e definir ele como global, atualizando ele só depois de checar se o player pode ou não sair
-
 mapa_itens -> c = chave; i = item sorteado por randint
 
+p (porta pro mapa 1) -> fazer ele conseguir voltar para o mapa 1 e voltar para o mapa 2
 
-ERRO
-
-O que deseja fazer? (andar, olhar, investigar, usar, pegar, personagem, equipar, sair)
-> investigar
-Algo está brilhando no chão, parece uma chave.
-O que deseja fazer? (andar, olhar, investigar, usar, pegar, personagem, equipar, sair)
-> pegar
-Traceback (most recent call last):
-  File "c:\Users\User\Documents\b\python-text-rpg\game.py", line 378, in <module>
-    title_screen()
-  File "c:\Users\User\Documents\b\python-text-rpg\game.py", line 30, in title_screen
-O que deseja fazer? (andar, olhar, investigar, usar, pegar, personagem, equipar, sair)
-> andar
-Para qual direção gostaria de ir?
-(Ou escreva "Sair" para sair, ou "Mapa" para ver o mapa e as legendas)
-> norte
-
-O que deseja fazer? (andar, olhar, investigar, usar, pegar, personagem, equipar, sair)
-> andar
-Para qual direção gostaria de ir?
-(Ou escreva "Sair" para sair, ou "Mapa" para ver o mapa e as legendas)
-> leste
-
-O que deseja fazer? (andar, olhar, investigar, usar, pegar, personagem, equipar, sair)
-> andar
-Para qual direção gostaria de ir?
-(Ou escreva "Sair" para sair, ou "Mapa" para ver o mapa e as legendas)
-> leste
-chave
-O que deseja fazer? (andar, olhar, investigar, usar, pegar, personagem, equipar, sair)
-> investigar
-Algo está brilhando no chão, parece uma chave.
-O que deseja fazer? (andar, olhar, investigar, usar, pegar, personagem, equipar, sair)
-> pegar
-Traceback (most recent call last):
-  File "c:\Users\User\Documents\b\python-text-rpg\game.py", line 379, in <module>
-    title_screen()
-    ~~~~~~~~~~~~^^
-  File "c:\Users\User\Documents\b\python-text-rpg\game.py", line 30, in title_screen
-    title_screen_options()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "c:\Users\User\Documents\b\python-text-rpg\game.py", line 35, in title_screen_options
-    setup_game()
-    ~~~~~~~~~~^^
-  File "c:\Users\User\Documents\b\python-text-rpg\game.py", line 375, in setup_game
-    prompt()
-    ~~~~~~^^
-  File "c:\Users\User\Documents\b\python-text-rpg\game.py", line 92, in prompt
-    pegar()
-    ~~~~~^^
-  File "c:\Users\User\Documents\b\python-text-rpg\game.py", line 193, in pegar
-    if posicao_player_itens == 'chave':
-       ^^^^^^^^^^^^^^^^^^^^
-UnboundLocalError: cannot access local variable 'posicao_player_itens' where it is not associated with a value
+bugs:
+    Item não é mostrado quando o comando 'personagem' é chamado;
+    bugs no mapa novo ('o').
