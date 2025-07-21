@@ -25,33 +25,31 @@ class Inimigo:
         return self._name
         
 class Item:
-    def __init__(self, name, description, tipo, value):
+    def __init__(self, name, description, tipo, value, usable):
         self._name = name
         self._description = description
         self._tipo = tipo
         self._value = value
         self.equipped = False
-        self.usable = ''
+        self.usable = usable
     
     def __str__(self):
         return self._name
 
 class Arma(Item):
-    def __init__(self, name, description, tipo, value, equipped, damage):
-        super().__init__(name, description, tipo, value)
+    def __init__(self, name, description, tipo, value, usable, equipped, damage):
+        super().__init__(name, description, tipo, value, usable)
         self._equipped = equipped
         self._damage = damage
     
     def __str__(self):
         return self._name
 
-espada_longa = Arma('espada longa', 'Uma espada com uma lâmina grande e afiada', 'Corpo-a-copro', 15, True, d8)
-arco = Arma('arco', 'Um arco', 'Distância', 10, False, d6)
-flecha = Item('Flecha', 'Flecha para o arco', 'Consumível', 5)
-flecha.usable = True
-pocao = Item('Poção', 'Poção que restaura vida.', 'Consumível', 20)
-pocao.usable = True
-esmeralda = Item('Esmeralda', 'Uma esmeralda valiosa.', 'Vendível', 250)
+espada_longa = Arma('espada longa', 'uma espada com uma lâmina grande e afiada', 'corpo-a-copro', 15, False, True, d8)
+arco = Arma('arco', 'um arco', 'distância', 10, False, False, d6)
+flecha = Item('Flecha', 'Flecha para o arco', 'Consumível', 5, True)
+pocao = Item('Poção', 'Poção que restaura vida.', 'Consumível', 20, True)
+esmeralda = Item('Esmeralda', 'Uma esmeralda valiosa.', 'Vendível', 250, False)
 
 
 class Player:
@@ -64,7 +62,7 @@ class Player:
         self._armas = [arco]
         self.xposition = ''
         self.yposition = ''
-        self._inventory = ['escudo', 'mapa']
+        self._inventory = ['mapa']
         self._experience = 0
         self._skills = {
             "Força": '1',
@@ -84,8 +82,17 @@ class Player:
     def inventario(self):
         lista = []
         for item in self._inventory:
-            if item == Item: lista.append(item._name)
-            else: lista.append(item)
+            if item == Item: 
+                print('debug1')
+                print(f'item = {item}')
+                lista.append(item._name)
+                print(lista)
+            else: 
+                print('debug 2')
+                print(f'item = {item}')
+                lista.append(item)
+                print(lista)
+        return lista
 
 player1 = Player()
 player1.xposition = 2

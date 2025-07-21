@@ -174,6 +174,7 @@ def atualizar_posicao_player():
 definir_mapa(0)
 atualizar_posicao_player()
 
+#melhorar código
 def pegar():
     posicao_player_itens = mapa_itens[player1.yposition][player1.xposition]
     if posicao_player_itens == 'chave':
@@ -182,9 +183,11 @@ def pegar():
         print('Você pegou uma chave.')
     elif posicao_player_itens == 'item':
         item = ITEM['ITEM']
-        player1._inventory.append(item)
+        player1._inventory.append(item._name.lower())
         posicao_player_itens = ' '
         print(f'Você pegou {item}.')
+    else: print('Não há nenhum item aqui!')
+    print(player1._inventory)
 
 def mostrar_mapa():
     mapa[player1.yposition][player1.xposition] = 'o'

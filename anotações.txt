@@ -1,11 +1,11 @@
-deixar o código mais otimizado, retirar repetições
+1. deixar o código mais otimizado, retirar repetições
+2. fazer interação (investigar, olhar) com tiles que estão adjascentes ao tile do player e não podem ser "pisados"
+3. p (porta pro mapa 1) -> fazer ele conseguir voltar para o mapa 1 e voltar para o mapa 2
 
-fazer interação (investigar, olhar) com tiles que estão adjascentes ao tile do player e não podem ser "pisados"
-
-mapa_itens -> c = chave; i = item sorteado por randint
-
-p (porta pro mapa 1) -> fazer ele conseguir voltar para o mapa 1 e voltar para o mapa 2
+-> fazer o texto ocupar a tela toda (usar o tkinter?)
 
 bugs:
-    Item não é mostrado quando o comando 'personagem' é chamado;
     bugs no mapa novo ('o').
+
+bugs resolvidos:
+    Item não é mostrado quando o comando 'personagem' é chamado; -> resolvido com "item._name.lower()"
