@@ -130,31 +130,34 @@ def menu_personagem():
     mostrar_skills()
     print('-' * 29)
 
+#só permite usar itens especiais, não itens do inventário
 def usar(item):
     lugar = puxar_data()
-    inventario = []
-    for i in player1._inventory: inventario.append(i.lower())
+    inventario = player1.inventario()
     if item.lower() not in inventario: print('Você não possui esse item!')
     elif item.lower() != lugar['ITEM_USAVEL'].lower(): print('Você não pode usar esse item aqui.')
     else:
         print(f'Você usou {item}')
         player1._inventory.remove(item)
         match lugar:
-            case CASA:
-                CASA['PORTA_FECHADA'] = False
-                print('Você destrancou a porta.')
-                escolher_mapa()
+            case PORTA:
+                if PORTA['PORTA_FECHADA']:
+                    PORTA['PORTA_FECHADA'] = False
+                    print('Você destrancou a porta.')
+                    mudar_mapa()
+                else: print('A porta já está aberta.')
 
 def info(funcao):
+    lugar = puxar_data()
     if posicao_player_itens == 'chave' or posicao_player_itens == 'item':
         if funcao == 'INFO': mensagem_tesouro()
         else:
-            lugar = puxar_data()
             print(lugar[funcao])
+    elif lugar == ESPACO and funcao == 'DESCRICAO': print(choice(list(DESCRICAO_DO_INTERIOR_DA_CASA.values())))
     else:
-        lugar = puxar_data()
         print(lugar[funcao])
-    
+
+#o mapa_mostrar não é o mapa que mostrakkkk, mas sim o mapa que fica no "background"
 def definir_mapa(numero):
     global mapa, mapa_mostrar, mapa_atual, posicaoy, posicaox, mapa_itens
     mapa, mapa_mostrar, mapa_atual, posicaoy, posicaox, mapa_itens = gerar_mapa(numero)
@@ -187,7 +190,6 @@ def pegar():
         posicao_player_itens = ' '
         print(f'Você pegou {item}.')
     else: print('Não há nenhum item aqui!')
-    print(player1._inventory)
 
 def mostrar_mapa():
     mapa[player1.yposition][player1.xposition] = 'o'
@@ -203,6 +205,10 @@ def puxar_data():
         case 'armazem': return ARMAZEM
         case 'casa': return CASA
         case 'estrada': return ESTRADA
+        case 'espaço': return ESPACO
+        case 'entulhos': return ENTULHOS
+        case 'porta': return PORTA
+        case 'porta_fechada': return PORTA
 
 def atributos_settings():
     while True:
@@ -228,10 +234,17 @@ def checar_posicao(posicao_player):
             elif posicao_player == '^': return 'floresta'
             elif posicao_player == '▨': return 'armazem'
             elif posicao_player == '⛶': return 'casa'
+            elif posicao_player == '[': return 'porta_fechada'
         case 1:
             if posicao_player == ' ': return 'espaço'
             elif posicao_player == '#': return 'escombros'
             elif posicao_player == '▢': return 'parede'
+            elif posicao_player == ']': 
+                PORTA['PORTA_FECHADA'] = False
+                return 'porta'
+            elif posicao_player == '[':
+                PORTA['PORTA_FECHADA'] = True
+                return 'porta_fechada'
 
 def pode_andar():
     match checar_posicao(mapa[player1.yposition][player1.xposition]):
@@ -241,31 +254,36 @@ def pode_andar():
         case 'casa': return 'sim'
         case 'neblina':
             print('A neblina está muito densa para esse lado, é melhor não se afastar...')
+            sleep(2)
             return 'não'
-        case 'espaço':  return 'sim'
+        case 'espaço': return 'sim'
         case 'escombros':
             print('Escombros impedem o caminho. Ache um jeito de desbloquear a passagem!')
+            sleep(2)
             return 'não'
         case 'parede':
             print('Por mais que a casa esteja abandonada e caindo aos pedaços, a parede ainda é sólida.')
+            sleep(2)
             return 'não'
+        case 'porta': return 'sim'
+        case 'porta_fechada': return 'sim'
 
 def mudar_mapa():
-    lugar = puxar_data()
-    if lugar['PORTA_FECHADA'] == False:
+    if PORTA['PORTA_FECHADA'] == False:
         quer_entrar = input('Você gostaria de entrar?\n>').lower()
         while quer_entrar not in ['sim', 'não', 's', 'nao', 'n']: print('Responda com Sim ou Não!')
         if quer_entrar in ['sim', 's']:
-            match lugar:
-                case CASA:
-                    if mapa_atual == 0:
-                        return 1
-                    elif mapa_atual == 1:
-                        return 0
+            escolher_mapa()
         else: print('Você olha assustado para a casa e decide voltar...')
-    else: return
+    else: None
 
-def escolher_mapa(): mapa = definir_mapa(mudar_mapa())
+def escolher_mapa(): 
+    match mapa_atual:
+        case 0:
+            numero = 1
+        case 1:
+            numero = 0
+    definir_mapa(numero)
 
 def legenda():
     print(posicao_player_itens)
@@ -281,6 +299,18 @@ def legenda():
             print("'▢' representa as paredes da casa")
             print("' ' representa o espaço da casa, explore e investigue para ver se acha algo!")
             print("'o' representa onde seu personagem está")
+
+def mudar_tile(tile, yposition_antiga, xposition_antiga):
+    match tile:
+        case 'floresta': mapa[yposition_antiga][xposition_antiga] = '^'
+        case 'estrada': mapa[yposition_antiga][xposition_antiga] = '='
+        case 'armazem': mapa[yposition_antiga][xposition_antiga] = '▨'
+        case 'casa': mapa[yposition_antiga][xposition_antiga] = '⛶'
+        case 'espaço': mapa[yposition_antiga][xposition_antiga] = ' '
+        case 'porta': mapa[yposition_antiga][xposition_antiga] = ']'
+        case 'porta_fechada': mapa[yposition_antiga][xposition_antiga] = '['
+    mapa[player1.yposition][player1.xposition] = 'o'
+    atualizar_posicao_player()
 
 def posicao():
     while True:
@@ -302,15 +332,9 @@ def posicao():
                 case 'sul': player1.yposition += 1
             chave = pode_andar()
             tile = checar_posicao(mapa_mostrar[yposition_antiga][xposition_antiga])
+            print(chave)
             if chave == 'sim':
-                match tile:
-                    case 'floresta': mapa[yposition_antiga][xposition_antiga] = '^'
-                    case 'estrada': mapa[yposition_antiga][xposition_antiga] = '='
-                    case 'armazem': mapa[yposition_antiga][xposition_antiga] = '▨'
-                    case 'casa': mapa[yposition_antiga][xposition_antiga] = '⛶'
-                    case 'espaço': mapa[yposition_antiga][xposition_antiga] = ' '
-                mapa[player1.yposition][player1.xposition] = 'o'
-                atualizar_posicao_player()
+                mudar_tile(tile, yposition_antiga, xposition_antiga)
                 break
             else:
                 player1.xposition = xposition_antiga
