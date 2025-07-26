@@ -4,9 +4,12 @@
 
 -> fazer o texto ocupar a tela toda (usar o tkinter?)
 
-bugs:
-    o tile da porta fechada '[' não muda para o tile da porta aberta ']'
-    usar() só permite usar itens especiais, não itens do inventário
+funcionalidades p fazer:
+    conversar (ia?)
+    investigação
 
-bugs resolvidos:
-    Item não é mostrado quando o comando 'personagem' é chamado; -> resolvido com "item._name.lower()"
+bugs:
+
+
+ideias da história:
+    fazer algo chamar a atenção dele lá fora, tirando ele da casa (o mapa0 muda)

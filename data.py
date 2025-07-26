@@ -47,9 +47,9 @@ class Arma(Item):
 
 espada_longa = Arma('espada longa', 'uma espada com uma lâmina grande e afiada', 'corpo-a-copro', 15, False, True, d8)
 arco = Arma('arco', 'um arco', 'distância', 10, False, False, d6)
-flecha = Item('Flecha', 'Flecha para o arco', 'Consumível', 5, True)
-pocao = Item('Poção', 'Poção que restaura vida.', 'Consumível', 20, True)
-esmeralda = Item('Esmeralda', 'Uma esmeralda valiosa.', 'Vendível', 250, False)
+flecha = Item('flecha', 'flecha para o arco', 'consumível', 5, True)
+pocao = Item('poção', 'poção que restaura vida.', 'consumível', 20, True)
+esmeralda = Item('esmeralda', 'uma esmeralda valiosa.', 'vendível', 250, False)
 
 
 class Player:
@@ -64,12 +64,6 @@ class Player:
         self.yposition = ''
         self._inventory = ['mapa']
         self._experience = 0
-        self._skills = {
-            "Força": '1',
-            "Agilidade": '1',
-            "Inteligência": '1',
-            "Carisma": '1'
-        }
 
     def __str__(self):
         return self._name
@@ -99,7 +93,6 @@ w = '=' #estrada
 x = '^' #floresta
 y = '▨' #armazém
 z = '⛶' #casa abandonada
-d = '[' #porta fechada
 
 #mapa1 --dentro da casa
 r = ' ' #representa o caminho andável pelo personagem
@@ -114,7 +107,7 @@ def gerar_mapa(numero):
     match numero:
         case 0:
             mapa_geral = [[a, a, a, a, a, a, a],
-                          [a, z, d, z, x, x, a],
+                          [a, z, p, z, x, x, a],
                           [a, x, w, w, w, w, a],
                           [a, x, w, x, x, x, a],
                           [a, x, w, x, y, x, a],
@@ -122,7 +115,7 @@ def gerar_mapa(numero):
                           [a, a, a, a, a, a, a]]
 
             mapa_base =  [[a, a, a, a, a, a, a],
-                          [a, z, d, z, x, x, a],
+                          [a, z, p, z, x, x, a],
                           [a, x, w, w, w, w, a],
                           [a, x, w, x, x, x, a],
                           [a, x, w, x, y, x, a],
@@ -186,8 +179,7 @@ ARMAZEM = {
 
 CASA = {
     'DESCRICAO': 'Uma casa abandonada caindo aos pedaços. As venezianas estão quebradas e o teto parece parcialmente no lugar.',
-    'INFO': 'A porta está trancada.',
-    'ITEM_USAVEL': None
+    'INFO': '~~~.'
 }
 
 DESCRICAO_DO_INTERIOR_DA_CASA = {
@@ -211,6 +203,8 @@ ENTULHOS = {
 }
 
 PORTA = {
+    'DESCRICAO': 'A porta está um pouco velha, mas ainda segue em pé.',
+    'INFO': 'A porta está trancada.',
     'ITEM_USAVEL': 'chave',
     'PORTA_FECHADA': True
 }
@@ -219,8 +213,8 @@ CHAVE = {
     'ITEM': 'chave'
 }
 
-lista_itens = [pocao, pocao, flecha, flecha, flecha, esmeralda]
+lista_itens = [pocao, flecha, esmeralda]
 
 ITEM = {
-    'ITEM': lista_itens[d6-1]
+    'ITEM': lista_itens[d4-1]
 }

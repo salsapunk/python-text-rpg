@@ -37,37 +37,6 @@ def title_screen_options():
         sleep(1)
         title_screen()
 
-def atributos():
-    pontos = 3
-    if pontos > 0:
-        print(f'Pontos: {pontos}')
-        print(f'Força: 1')
-        forca = int(input('> '))
-        if forca != 0: pontos = pontos - forca
-        player1._skills['Força'] = 1 + forca
-        
-        print(f'Pontos: {pontos}')
-        print(f'Agilidade: 1')
-        agilidade = int(input('> '))
-        if agilidade != 0: pontos = pontos - agilidade
-        player1._skills['Agilidade'] = 1 + agilidade
-        
-        print(f'Pontos: {pontos}')
-        print(f'Inteligência: 1')
-        inteligencia = int(input('> '))
-        if inteligencia != 0: pontos = pontos - inteligencia
-        player1._skills['Inteligência'] = 1 + inteligencia
-        
-        print(f'Pontos: {pontos}')
-        print(f'Carisma: 1')
-        carisma = int(input('> '))
-        if carisma != 0: pontos = pontos - carisma
-        player1._skills['Carisma'] = 1 + carisma
-        
-        if pontos < 0: 
-            print('Houve um erro na distribuição dos atributos, tente novamente.')
-            atributos()
-
 def prompt():
     print('O que deseja fazer? (andar, olhar, investigar, usar, pegar, mapa, personagem, equipar, sair)')
     prompt = input('> ').lower()
@@ -132,14 +101,23 @@ def menu_personagem():
 
 #só permite usar itens especiais, não itens do inventário
 def usar(item):
-    lugar = puxar_data()
     inventario = player1.inventario()
     if item.lower() not in inventario: print('Você não possui esse item!')
-    elif item.lower() != lugar['ITEM_USAVEL'].lower(): print('Você não pode usar esse item aqui.')
+    if item == 'chave':
+        lugar = puxar_data()
+        if item.lower() != lugar['ITEM_USAVEL'].lower(): print('Você não pode usar esse item aqui.')
+        else:
+            print(f'Você usou {item}')
+            player1._inventory.remove(item)
+            destrancando_portas(lugar)
     else:
-        print(f'Você usou {item}')
-        player1._inventory.remove(item)
-        match lugar:
+        match item:
+            case pocao:
+                vida_recuperada = d6
+                player1._hp += vida_recuperada
+
+def destrancando_portas(lugar):
+    match lugar:
             case PORTA:
                 if PORTA['PORTA_FECHADA']:
                     PORTA['PORTA_FECHADA'] = False
@@ -169,10 +147,26 @@ def mensagem_tesouro():
         case 'chave': print('Algo está brilhando no chão, parece uma chave.')
         case 'item': print('Tem algo no chão. Pegue para saber o que é.')
 
+def checar_posicao(posicao_player):
+    match mapa_atual:
+        case 0:
+            if posicao_player == ' ': return 'neblina'
+            elif posicao_player == '=': return 'estrada'
+            elif posicao_player == '^': return 'floresta'
+            elif posicao_player == '▨': return 'armazem'
+            elif posicao_player == '⛶': return 'casa'
+            elif posicao_player == ']': return 'porta'
+        case 1:
+            if posicao_player == ' ': return 'espaço'
+            elif posicao_player == '#': return 'escombros'
+            elif posicao_player == '▢': return 'parede'
+            elif posicao_player == ']': return 'porta'
+
 def atualizar_posicao_player():
     global posicao_player, posicao_player_itens
     posicao_player = mapa_mostrar[player1.yposition][player1.xposition]
     posicao_player_itens = mapa_itens[player1.yposition][player1.xposition]
+    if checar_posicao(posicao_player) == 'porta': mudar_mapa()
 
 definir_mapa(0)
 atualizar_posicao_player()
@@ -210,42 +204,6 @@ def puxar_data():
         case 'porta': return PORTA
         case 'porta_fechada': return PORTA
 
-def atributos_settings():
-    while True:
-        os.system(os_var)
-        print('Distribua três pontos entre os seguintes atributos, que já começam com 1 \n')
-        atributos()
-        print(player1._skills)
-        print('Tem certeza da distribuição dos atributos?')
-        r = input('[Sim / Não] \n' '> ').lower()
-        if r in ['nao', 'não', 'n']: print('Tente novamente')
-        elif r in ['sim', 's']:
-            os.system(os_var)
-            break
-        else:
-            print('Responda com Sim ou Não. Faça novamente!')
-            sleep(2)
-
-def checar_posicao(posicao_player):
-    match mapa_atual:
-        case 0:
-            if posicao_player == ' ': return 'neblina'
-            elif posicao_player == '=': return 'estrada'
-            elif posicao_player == '^': return 'floresta'
-            elif posicao_player == '▨': return 'armazem'
-            elif posicao_player == '⛶': return 'casa'
-            elif posicao_player == '[': return 'porta_fechada'
-        case 1:
-            if posicao_player == ' ': return 'espaço'
-            elif posicao_player == '#': return 'escombros'
-            elif posicao_player == '▢': return 'parede'
-            elif posicao_player == ']': 
-                PORTA['PORTA_FECHADA'] = False
-                return 'porta'
-            elif posicao_player == '[':
-                PORTA['PORTA_FECHADA'] = True
-                return 'porta_fechada'
-
 def pode_andar():
     match checar_posicao(mapa[player1.yposition][player1.xposition]):
         case 'estrada': return 'sim'
@@ -266,14 +224,12 @@ def pode_andar():
             sleep(2)
             return 'não'
         case 'porta': return 'sim'
-        case 'porta_fechada': return 'sim'
 
 def mudar_mapa():
     if PORTA['PORTA_FECHADA'] == False:
-        quer_entrar = input('Você gostaria de entrar?\n>').lower()
+        quer_entrar = input('Você gostaria de entrar?\n> ').lower()
         while quer_entrar not in ['sim', 'não', 's', 'nao', 'n']: print('Responda com Sim ou Não!')
-        if quer_entrar in ['sim', 's']:
-            escolher_mapa()
+        if quer_entrar in ['sim', 's']: escolher_mapa()
         else: print('Você olha assustado para a casa e decide voltar...')
     else: None
 
@@ -308,7 +264,6 @@ def mudar_tile(tile, yposition_antiga, xposition_antiga):
         case 'casa': mapa[yposition_antiga][xposition_antiga] = '⛶'
         case 'espaço': mapa[yposition_antiga][xposition_antiga] = ' '
         case 'porta': mapa[yposition_antiga][xposition_antiga] = ']'
-        case 'porta_fechada': mapa[yposition_antiga][xposition_antiga] = '['
     mapa[player1.yposition][player1.xposition] = 'o'
     atualizar_posicao_player()
 
@@ -332,7 +287,6 @@ def posicao():
                 case 'sul': player1.yposition += 1
             chave = pode_andar()
             tile = checar_posicao(mapa_mostrar[yposition_antiga][xposition_antiga])
-            print(chave)
             if chave == 'sim':
                 mudar_tile(tile, yposition_antiga, xposition_antiga)
                 break
@@ -346,8 +300,6 @@ def setup_game():
     # print('Qual o nome do seu personagem? \n')
     # name = input('> ')
     # player1._name = name
-    # atributos_settings()
-    # print(f'Que o vento guie sua jornada, {player1._name}')
     while player1.win == False:
         prompt()
     print('Parabéns! Você venceu o jogo!')
