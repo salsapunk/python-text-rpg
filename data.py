@@ -9,17 +9,11 @@ d6 = randint(1, 6)
 d4 = randint(1, 4)
 
 class Inimigo:
-    def __init__(self, name, level, hp, arma, skills):
+    def __init__(self, name, level, hp, arma):
         self._name = name
         self._level = level
         self._hp = hp
         self._arma = arma
-        self._skills = {
-            "Força": skills[0],
-            "Agilidade": skills[1],
-            "Inteligência": skills[2],
-            "Carisma": skills[3]
-        }
     
     def __str__(self):
         return self._name
@@ -84,7 +78,10 @@ player1 = Player()
 player1.xposition = 2
 player1.yposition = 5
 
-#geral
+
+
+#MAPA (TILES, ITENS E FUNÇÃO)
+
 a = ' ' #neblina --limitando a movimentação
 b = '▢' #parede --limitando a movimentação
 
@@ -159,6 +156,8 @@ def gerar_mapa(numero):
 
             mapa_atual = 1
             return mapa_geral, mapa_base, mapa_atual, 1, 3, mapa_items
+
+#INFORMAÇÕES DE LUGARES DO MAPA
 
 FLORESTA = {
     'DESCRICAO': 'A floresta é densa e sombria. Ela é perfurada por uma névoa fina. A lama do chão dificulta um pouco seu movimento.',
