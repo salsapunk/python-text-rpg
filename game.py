@@ -52,37 +52,43 @@ def prompt():
             case 'andar': posicao()
             case 'personagem': menu_personagem()
             case 'equipar':
-                item = input('Qual arma gostaria de equipar?')
+                item = input('Qual arma gostaria de equipar?\n> ')
                 equipar(item)
             case 'mapa': mostrar_mapa()
             case 'sair': sys.exit()
+
+def desequipar(equipado, inventario):
+    item_velho = equipado[0]
+    inventario.append(item_velho)
+    equipado.remove(item_velho)
 
 def equipar(arma):
     inventario = player1._armas
     equipado = player1._equipado
     i = 0
-    while i < len(inventario):
-        arma_inventario = inventario[i]._name.lower()
-        arma.lower()
-        if arma == arma_inventario:
-            equipavel = inventario[i]
-            if equipado[0]._equipped == True:
-                equipado[0]._equipped = False
-                item_velho = equipado[0]
-                inventario.append(item_velho)
-                equipado.remove(item_velho)
-            equipado.append(equipavel)
-            inventario.remove(equipavel)
-            print('O item foi equipado!')
-        i = i+1        
+    if arma == 'vazio':
+        desequipar(equipado, inventario)
+        equipado.append('')
+        print('O item foi desequipado.')
+    else:
+        while i < len(inventario):
+            arma_inventario = inventario[i]._name.lower()
+            arma.lower()
+            if arma == arma_inventario:
+                equipavel = inventario[i]
+                if equipado[0] == '':
+                    equipado.remove('')
+                else:
+                    equipado[0]._equipped = False
+                    desequipar(equipado, inventario)
+                equipado.append(equipavel)
+                inventario.remove(equipavel)
+                print('O item foi equipado.')
+            i = i+1        
 
-def mostrar_skills():
-    for atributos in player1._skills:
-        for value in player1._skills[atributos]:
-            if atributos == 'Carisma':
-                print(f'{atributos}: {''.join(value)}.')
-            else:
-                print(f'{atributos}: {''.join(value)};')
+def arma_equipada():
+    if player1._equipado[0] =='': return 'vazio'
+    else: return player1._equipado[0]._name
 
 def menu_personagem():
     armas = player1.inventario_armas()
@@ -93,13 +99,11 @@ def menu_personagem():
     print(f'Level: {player1._level}')
     print(f'Vida: {player1._hp}')
     print(f'Experiência: {player1._experience}')
-    print(f'Arma equipada: {player1._equipado[0]._name}')
+    print(f'Arma equipada: {arma_equipada()}')
     print(f'Armas no inventário: {' ,'.join(armas)}')
     print(f'Invetário: {', '.join(inventario)}')
-    mostrar_skills()
     print('-' * 29)
 
-#só permite usar itens especiais, não itens do inventário
 def usar(item):
     inventario = player1.inventario()
     if item.lower() not in inventario: print('Você não possui esse item!')

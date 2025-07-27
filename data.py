@@ -52,7 +52,7 @@ class Player:
         self._name =  ''
         self._level = 1
         self._hp = 12
-        self._equipado = [espada_longa]
+        self._equipado = ['']
         self._armas = [arco]
         self.xposition = ''
         self.yposition = ''
@@ -212,8 +212,8 @@ CHAVE = {
     'ITEM': 'chave'
 }
 
-lista_itens = [pocao, flecha, esmeralda]
+#lista_itens = [pocao, flecha, esmeralda]
 
-ITEM = {
-    'ITEM': lista_itens[d4-1]
-}
+#ITEM = {
+#    'ITEM': lista_itens[d4-1]
+#}
