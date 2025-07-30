@@ -5,6 +5,9 @@
 -> fazer o texto ocupar a tela toda (usar o tkinter?)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0bf4bb5 (anotações e comentários em data.py)
 -> armazenar a posição antiga e a nova antes dele mudar de lugar, descartando algumas funções
   > mapa geral armazena todos os tiles,
   > a posição do player é sempre 'o',
@@ -27,7 +30,11 @@ bugs:
 
 ideias da história:
 <<<<<<< HEAD
+<<<<<<< HEAD
     fazer algo chamar a atenção dele lá fora, tirando ele da casa (o mapa0 muda)
 =======
     fazer algo chamar a atenção dele lá fora, tirando ele da casa (o mapa0 muda)
 >>>>>>> c4da7ae (usar reformulado e - atributos)
+=======
+    fazer algo chamar a atenção dele lá fora, tirando ele da casa (o mapa0 muda)
+>>>>>>> 0bf4bb5 (anotações e comentários em data.py)
