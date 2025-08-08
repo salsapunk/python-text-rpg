@@ -8,16 +8,6 @@ d8 = randint(1, 8)
 d6 = randint(1, 6)
 d4 = randint(1, 4)
 
-class Inimigo:
-    def __init__(self, name, level, hp, arma):
-        self._name = name
-        self._level = level
-        self._hp = hp
-        self._arma = arma
-    
-    def __str__(self):
-        return self._name
-        
 class Item:
     def __init__(self, name, description, tipo, value, usable):
         self._name = name
@@ -39,25 +29,36 @@ class Arma(Item):
     def __str__(self):
         return self._name
 
-espada_longa = Arma('espada longa', 'uma espada com uma lâmina grande e afiada', 'corpo-a-copro', 15, False, True, d8)
-arco = Arma('arco', 'um arco', 'distância', 10, False, False, d6)
-flecha = Item('flecha', 'flecha para o arco', 'consumível', 5, True)
-pocao = Item('poção', 'poção que restaura vida.', 'consumível', 20, True)
-esmeralda = Item('esmeralda', 'uma esmeralda valiosa.', 'vendível', 250, False)
+faca = Arma('faca', 'uma faca de serra', 'corpo-a-corpo', 10, False, False, randint(1, 4))
 
+class Inimigo:
+    def __init__(self, name, hp, arma):
+        self._name = name
+        self._hp = hp
+        self._equipado = [arma]
+        self._inventory = ['poção']
+    
+    def __str__(self):
+        return self._name
+    
+    def inventario(self):
+        lista = []
+        for item in self._inventory:
+            if hasattr(item, '_name'): lista.append(item._name)
+            else: lista.append(item)
+        return lista
+monstro = Inimigo('monstro', 12, faca)
 
 class Player:
     def __init__(self):
         self.win = False
         self._name =  ''
-        self._level = 1
         self._hp = 12
         self._equipado = ['']
-        self._armas = [arco]
+        self._armas = [faca]
         self.xposition = ''
         self.yposition = ''
-        self._inventory = ['mapa']
-        self._experience = 0
+        self._inventory = ['mapa', 'poção', 'pé de cabra']
 
     def __str__(self):
         return self._name
@@ -70,7 +71,7 @@ class Player:
     def inventario(self):
         lista = []
         for item in self._inventory:
-            if item == Item: lista.append(item._name)
+            if hasattr(item, '_name'): lista.append(item._name)
             else: lista.append(item)
         return lista
 
@@ -94,7 +95,8 @@ z = '⛶' #casa abandonada
 #mapa1 --dentro da casa
 r = ' ' #representa o caminho andável pelo personagem
 s = '#' #representa um lugar bloqueado por entulhos (fazer função para retirar)
-p = ']' #porta aberta
+p = ']' #porta fechada
+d = '[' #porta aberta
 
 #mapa de itens
 c = 'chave'
