@@ -7,8 +7,8 @@
 -> armazenar a posição antiga e a nova antes dele mudar de lugar, descartando algumas funções
 
 funcionalidades p fazer:
+    fazer o rpg ser infinito
     conversar
-    boss fight -> melhorar, deixar o monstro usar itens de cura
 
 bugs:
   consertar randint que gera o número apenas uma vez (não é por causa da variável)

@@ -36,7 +36,7 @@ class Inimigo:
         self._name = name
         self._hp = hp
         self._equipado = [arma]
-        self._inventory = ['poção']
+        self._inventory = ['poção', '']
     
     def __str__(self):
         return self._name
@@ -47,15 +47,16 @@ class Inimigo:
             if hasattr(item, '_name'): lista.append(item._name)
             else: lista.append(item)
         return lista
-monstro = Inimigo('monstro', 12, faca)
+
+monstro = Inimigo('monstro', 1, faca)
 
 class Player:
     def __init__(self):
         self.win = False
         self._name =  ''
         self._hp = 12
-        self._equipado = ['']
-        self._armas = [faca]
+        self._equipado = [faca]
+        self._armas = ['']
         self.xposition = ''
         self.yposition = ''
         self._inventory = ['mapa', 'poção', 'pé de cabra']
@@ -65,7 +66,9 @@ class Player:
     
     def inventario_armas(self):
         lista = []
-        for arma in self._armas: lista.append(arma._name)
+        for arma in self._armas: 
+            if arma == '': lista.append('vazio')
+            else: lista.append(arma._name)
         return lista
     
     def inventario(self):
@@ -130,7 +133,7 @@ def gerar_mapa(numero):
                           [a, a, a, a, a, a, a]]
 
             mapa_atual = 0
-            return mapa_geral, mapa_base, mapa_atual, 2, 5, mapa_items
+            return mapa_geral, mapa_base, mapa_atual, mapa_items
         case 1:
             mapa_geral = [[b, b, b, b, b, b, b],
                           [b, b, r, b, r, b, b],
@@ -157,7 +160,7 @@ def gerar_mapa(numero):
                           [a, a, a, a, a, a, a]]
 
             mapa_atual = 1
-            return mapa_geral, mapa_base, mapa_atual, 1, 3, mapa_items
+            return mapa_geral, mapa_base, mapa_atual, mapa_items
 
 #INFORMAÇÕES DE LUGARES DO MAPA
 
@@ -193,6 +196,7 @@ DESCRICAO_DO_INTERIOR_DA_CASA = {
 }
 
 ESPACO = {
+    'DESCRICAO': 'O chão de madeira parece meio desgastado pelos anos.',
     'INFO': 'Pegadas de barro são visíveis no chão.',
     'ITEM_USAVEL': None
 }

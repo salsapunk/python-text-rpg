@@ -57,10 +57,11 @@ def prompt():
             case 'sair': sys.exit()
 
 def definir_mapa(numero):
-    global mapa, mapa_mostrar, mapa_atual, posicaox, posicaoy, mapa_itens
-    mapa, mapa_mostrar, mapa_atual, posicaox, posicaoy, mapa_itens = gerar_mapa(numero)
-    player1.xposition = posicaox
-    player1.yposition = posicaoy
+    global mapa, mapa_mostrar, mapa_atual, mapa_itens
+    mapa, mapa_mostrar, mapa_atual, mapa_itens = gerar_mapa(numero)
+
+posicaox = player1.xposition
+posicaoy = player1.yposition
 
 def desequipar(equipado, inventario):
     item_velho = equipado[0]
@@ -115,20 +116,14 @@ def atualizar_posicao_player():
 
 def checar_posicao_alem(tile):
     if mapa[player1.yposition+1][player1.xposition] == tile: 
-        print('y+1') 
         return True
     elif mapa[player1.yposition-1][player1.xposition] == tile: 
-        print('y-1')
         return True
     elif mapa[player1.yposition][player1.xposition+1] == tile:
-        print('x+1')
         return True
     elif mapa[player1.yposition][player1.xposition-1] == tile: 
-        print('x-1')
         return True
     else: 
-        print('false')
-        print(mapa[player1.yposition][player1.xposition])
         return False
 
 def checar_1_maior(tile):
@@ -152,7 +147,7 @@ def checar_1_maior(tile):
 def usar(alvo, item):
     inventario = alvo.inventario()
     if item not in inventario: 
-        print('Você não possui esse item!')
+        if alvo == player1: print('Você não possui esse item!')
         return
     if item == 'chave' or item == 'pé de cabra':
         print(f'Você usou {item}')
@@ -165,11 +160,8 @@ def usar(alvo, item):
                     alvo._inventory.remove(item)
                     destrancando_portas(lugar)
             case 'pé de cabra':
-                print('debug 1')
                 if checar_posicao_alem('#'):
-                    print('debug 2')
                     x, y = checar_1_maior('#')
-                    print('debug 3')
                     mapa[y][x] = ' '
                     mapa_mostrar[y][x] = ' '
                     print('Você retirou os escombros e agora a passagem está livre.')
@@ -177,7 +169,6 @@ def usar(alvo, item):
     else:
         match item:
             case 'poção':
-                print('debug1')
                 vida_recuperada = randint(1, 8)
                 alvo._hp += vida_recuperada
         alvo._inventory.remove(item)
@@ -231,7 +222,7 @@ def mudar_mapa():
         else: print('Você olha assustado para a casa e decide voltar...')
     else: None
 
-definir_mapa(1)
+definir_mapa(0)
 atualizar_posicao_player()
 
 #melhorar código
@@ -353,18 +344,21 @@ def posicao():
 def gerar_inimigo():
     global inimigo
     inimigo = monstro
+    inimigo._hp = 12
     print(f'Um {monstro._name} aparece em sua frente!')
     return True
 
 def acao_inimigo():
-    x = randint(1, 5)
-    if x  <= 2: 
-        usar(inimigo,'poção')
+    if inimigo._hp <= 6 and inimigo._inventory[0] == 'poção': 
+        usar(inimigo, 'poção')
+        print("O inimigo usa uma poção!")
     else: 
         ataque(inimigo, player1)
+        print("O inimigo te ataca!")
 
 def prompt_combate(em_combate):
-    while em_combate and player1._hp > 0 and inimigo._hp > 0:
+    while em_combate and player1._hp > 0:
+        print(inimigo._hp)
         print('O que deseja fazer? (atacar, usar, equipar, personagem, fugir, sair)')
         prompt_combate = input('> ').lower()
         if prompt_combate not in ['atacar', 'defender', 'usar', 'equipar', 'personagem', 'fugir', 'sair']: print('Digite um comando válido!')
@@ -372,10 +366,10 @@ def prompt_combate(em_combate):
             match prompt_combate:
                 case 'atacar': em_combate = ataque(player1, inimigo);
                 case 'usar': 
-                    item = input('Qual item gostaria de usar?\n')
+                    item = input('Qual item gostaria de usar?\n> ')
                     usar(player1, item)
                 case 'equipar': 
-                    item = input('Qual arma gostaria de equipar?\n')
+                    item = input('Qual arma gostaria de equipar?\n> ')
                     equipar(item)
                 case 'personagem': 
                     menu_personagem()
@@ -384,6 +378,7 @@ def prompt_combate(em_combate):
                     em_combate = fugir()
                     continue
                 case 'sair': sys.exit()
+            if em_combate == False: break
             acao_inimigo()
 
 def ataque(atacante, alvo):
@@ -403,13 +398,11 @@ def setup_game():
     os.system(os_var)
     # print('Qual o nome do seu personagem? \n')
     # player1._name = input('> ')
-    while player1.win == False:
-        prompt_combate(gerar_inimigo())
-        if player1._hp == 0:
-            print('Game Over. Você morreu.')
-            sys.exit()
+    while player1._hp > 0 and player1.win == False:
         prompt()
-    print('Parabéns! Você venceu o jogo!')
+        #prompt_combate(gerar_inimigo())
+    if player1._hp == 0: print("Game Over. Você morreu.")
+    else: print('Parabéns! Você venceu o jogo!')
 
 
 title_screen()
